@@ -5,6 +5,7 @@
 @import "atoms/buttons.css";
 @import "atoms/color-swatch.css";
 @import "atoms/container.css";
+@import "atoms/icon.css";
 @import "atoms/range-input.css";
 @import "atoms/scroll-bar.css";
 @import "atoms/textarea.css";

@@ -8,8 +8,11 @@
     }
 
     .remove-button {
+        top: .5rem;
+    }
+
+    .color-value-container {
         width: 100%;
-        margin-left: 0;
     }
 
     .color-preview-box {
@@ -31,5 +34,16 @@
     .color-swatches {
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: repeat(2, 1fr);
+    }
+    .visually-hidden-mobile {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
     }
 }

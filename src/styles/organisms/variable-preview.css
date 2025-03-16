@@ -19,4 +19,5 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
     border: 1px solid var(--border-color);
     color: var(--accent-color);
+    white-space: nowrap;
 }

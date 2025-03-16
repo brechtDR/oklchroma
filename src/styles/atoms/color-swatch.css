@@ -1,5 +1,6 @@
 .preview-container {
-    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: .5rem;
 }
 
 .color-swatches {
@@ -75,6 +76,7 @@
     margin-top: 0.5rem;
     font-size: 0.875rem;
     color: var(--success-color);
+    min-height: 1.5rem;
     font-weight: 500;
     animation: fadeIn 0.3s ease-out;
 }

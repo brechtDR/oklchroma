@@ -14,11 +14,13 @@ export default function PatternTab({ pattern, isActive, onClick, displayColor }:
     return (
         <button
             className={`tab ${isActive ? "active-tab" : ""}`}
-            style={{
-                backgroundColor: isActive ? displayColor : "transparent",
-                borderBottom: `3px solid ${displayColor}`,
-                color: isActive && isDark ? "white" : "inherit",
-            }}
+            title={pattern.name}
+            style={
+                {
+                    "--tab-color": displayColor,
+                    color: isActive && isDark ? "white" : isActive ? "black" : "inherit",
+                } as React.CSSProperties
+            }
             onClick={onClick}
         >
             {pattern.name}

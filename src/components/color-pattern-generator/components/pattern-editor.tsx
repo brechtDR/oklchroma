@@ -31,6 +31,27 @@ export default function PatternEditor({
 }: PatternEditorProps) {
     return (
         <div className={`pattern-editor ${isVisible ? "visible" : "hidden"}`}>
+            <button
+                className="remove-button"
+                onClick={() => onRemovePattern(pattern.id)}
+                disabled={patterns.length <= 1}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="icon"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                </svg>
+                Remove<span className="visually-hidden-mobile"> pattern</span>
+            </button>
             <div className="pattern-header">
                 <div className="pattern-name-container">
                     <label className="input-label">Pattern Name</label>
@@ -44,13 +65,6 @@ export default function PatternEditor({
                     {nameError && <div className="error-message">{nameError}</div>}
                     <div className="input-help">Only letters, numbers, hyphens (-) and underscores (_) are allowed</div>
                 </div>
-                <button
-                    className="remove-button"
-                    onClick={() => onRemovePattern(pattern.id)}
-                    disabled={patterns.length <= 1}
-                >
-                    Remove
-                </button>
             </div>
 
             {/* Color Space Selector */}

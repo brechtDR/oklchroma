@@ -1,12 +1,11 @@
 .tabs {
     display: flex;
     padding-top: 1rem;
-    margin-bottom: 1.5rem;
     overflow-x: auto;
-    padding-bottom: 2px;
     gap: 0.5rem;
     scrollbar-width: thin;
     scrollbar-color: var(--accent-color) var(--bg-secondary);
+    padding-left: 1rem;
 }
 
 .tabs::-webkit-scrollbar {
@@ -24,8 +23,9 @@
 }
 
 .tab {
+    position: relative;
     padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem;
+    border-radius: 0.5rem 0.5rem 0 0;
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     border: 1px solid var(--border-color);
@@ -34,37 +34,39 @@
     transition: all 0.2s ease;
     white-space: nowrap;
     box-shadow: var(--shadow-sm);
+    border-bottom: 4px solid var(--tab-color);
+    &::before {
+        content: attr(title);
+        display: block;
+        font-weight: 700;
+        height: 0px;
+        visibility: hidden;
+        overflow: hidden;
+    }
 }
 
 .tab:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
+    background: var(--tab-color);
 }
 
 .active-tab {
     font-weight: 600;
-    border-width: 2px;
     box-shadow: var(--shadow-md);
+    background: var(--tab-color);
 }
 
 .add-tab-button {
-    padding: 0.75rem 1.25rem;
-    background-color: var(--success-color);
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
+    all: unset;
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    box-shadow: var(--shadow-sm);
-    white-space: nowrap;
+    justify-content: center;
+    align-content: center;
+    gap: .25rem;
+    cursor: pointer;
+    margin-top: .5rem;
+    margin-left: .5rem;
 }
 
 .add-tab-button:hover {
-    background-color: var(--success-hover);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    color: var(--success-hover);
 }
