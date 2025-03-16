@@ -1,4 +1,3 @@
-// ColorPatternGenerator.tsx
 import CSSOutput from "@components/color-pattern-generator/components/css-output.tsx";
 import PatternEditor from "@components/color-pattern-generator/components/pattern-editor.tsx";
 import PatternTab from "@components/color-pattern-generator/components/pattern-tab.tsx";
@@ -10,7 +9,6 @@ import {
 } from "@components/color-pattern-generator/utils/color";
 import { encodePatterns, loadPatternsFromURL } from "@components/color-pattern-generator/utils/url";
 import { useState, useEffect, useRef } from "react";
-import "../../styles/ColorPatternGenerator.css";
 import type { Pattern, ColorSpace } from "./types";
 
 export default function ColorPatternGenerator(): React.ReactElement {
@@ -236,16 +234,16 @@ export default function ColorPatternGenerator(): React.ReactElement {
         // Make sure URL is updated before copying
         updateURLParam();
 
-        if (typeof navigator !== "undefined") {
-            navigator.clipboard
-                .writeText(currentUrl)
-                .then(() => {
-                    alert("URL copied to clipboard!");
-                })
-                .catch((err) => {
-                    console.error("Failed to copy URL", err);
-                });
-        }
+        // if (typeof navigator !== "undefined") {
+        //     navigator.clipboard
+        //         .writeText(currentUrl)
+        //         .then(() => {
+        //             alert("URL copied to clipboard!");
+        //         })
+        //         .catch((err) => {
+        //             console.error("Failed to copy URL", err);
+        //         });
+        // }
     };
 
     // Function to get color for display based on the pattern's color space
@@ -269,8 +267,6 @@ export default function ColorPatternGenerator(): React.ReactElement {
             {/* Add a style element with our CSS variables */}
             <style dangerouslySetInnerHTML={{ __html: `:root {\n${styleBlock}\n}` }} />
 
-            <h1 className="title">Color Pattern Generator</h1>
-
             {/* Pattern Tabs */}
             <div className="tabs">
                 {patterns.map((pattern) => (
@@ -285,7 +281,21 @@ export default function ColorPatternGenerator(): React.ReactElement {
 
                 {patterns.length < 10 && (
                     <button className="add-tab-button" onClick={addPattern}>
-                        + Add Pattern
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            className="icon"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                            />
+                        </svg>
+                        <span className="visually-hidden-mobile">Add Pattern</span>
                     </button>
                 )}
             </div>
@@ -303,6 +313,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
                     getPreviewVarName={getPreviewVarName}
                     nameError={nameError}
                     patterns={patterns}
+                    cssVariables={cssVariables}
                 />
             ))}
 

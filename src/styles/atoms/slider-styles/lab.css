@@ -1,0 +1,37 @@
+/* Lab/Oklab Green-Red (a) Slider */
+.green-red-slider,
+.lab-a-slider,
+.oklab-a-slider {
+    background: linear-gradient(to right, #00ff00, #ff0000);
+}
+
+.green-red-slider::-webkit-slider-thumb,
+.lab-a-slider::-webkit-slider-thumb,
+.oklab-a-slider::-webkit-slider-thumb {
+    background: linear-gradient(135deg, #00ff00, #ff0000);
+}
+
+.green-red-slider::-moz-range-thumb,
+.lab-a-slider::-moz-range-thumb,
+.oklab-a-slider::-moz-range-thumb {
+    background: linear-gradient(135deg, #00ff00, #ff0000);
+}
+
+/* Lab/Oklab Blue-Yellow (b) Slider */
+.blue-yellow-slider,
+.lab-b-slider,
+.oklab-b-slider {
+    background: linear-gradient(to right, #0000ff, #ffff00);
+}
+
+.blue-yellow-slider::-webkit-slider-thumb,
+.lab-b-slider::-webkit-slider-thumb,
+.oklab-b-slider::-webkit-slider-thumb {
+    background: linear-gradient(135deg, #0000ff, #ffff00);
+}
+
+.blue-yellow-slider::-moz-range-thumb,
+.lab-b-slider::-moz-range-thumb,
+.oklab-b-slider::-moz-range-thumb {
+    background: linear-gradient(135deg, #0000ff, #ffff00);
+}

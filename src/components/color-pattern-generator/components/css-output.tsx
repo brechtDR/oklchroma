@@ -1,16 +1,51 @@
 // components/CSSOutput.tsx
+import { useState } from "react";
+
 interface CSSOutputProps {
     css: string;
-    onCopy: () => void;
 }
 
-export default function CssOutput({ css, onCopy }: CSSOutputProps) {
+export default function CssOutput({ css }: CSSOutputProps) {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        navigator.clipboard
+            .writeText(css)
+            .then(() => {
+                setCopied(true);
+
+                // Reset after 3 seconds
+                setTimeout(() => {
+                    setCopied(false);
+                }, 3000);
+            })
+            .catch((error) => {
+                console.error("Failed to copy CSS to clipboard:", error);
+            });
+    };
+
     return (
         <div className="output-container">
             <div className="output-header">
                 <h3 className="subtitle">Generated CSS</h3>
-                <button className="copy-button" onClick={onCopy}>
-                    Copy to Clipboard
+                <button
+                    className={`copy-button ${copied ? "copied" : ""}`}
+                    onClick={handleCopy}
+                    aria-label="Copy CSS to clipboard"
+                >
+                    {copied ? (
+                        <>
+                            <span className="copy-icon" aria-hidden="true">
+                                ✓
+                            </span>
+                            <span>Copied!</span>
+                        </>
+                    ) : (
+                        <>
+                            <span className="copy-icon" aria-hidden="true"></span>
+                            <span>Copy to Clipboard</span>
+                        </>
+                    )}
                 </button>
             </div>
             <textarea
@@ -18,7 +53,13 @@ export default function CssOutput({ css, onCopy }: CSSOutputProps) {
                 value={css}
                 className="css-output"
                 onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+                aria-label="Generated CSS code"
             />
+            {copied && (
+                <div className="copy-success-message css-copied-message" role="status" aria-live="polite">
+                    CSS copied to clipboard successfully!
+                </div>
+            )}
         </div>
     );
 }

@@ -1,5 +1,4 @@
 // components/PatternEditor.tsx
-// components/PatternEditor.tsx
 import type { Pattern, ColorSpace } from "../types.ts";
 import { colorSpaceGroups } from "../utils/constants.ts";
 import ColorControls from "./color-controls.tsx";
@@ -15,6 +14,7 @@ interface PatternEditorProps {
     getPreviewVarName: (pattern: Pattern, percentage: number) => string;
     nameError: string;
     patterns: Pattern[];
+    cssVariables?: Record<string, string>; // Add this prop
 }
 
 export default function PatternEditor({
@@ -27,9 +27,31 @@ export default function PatternEditor({
     getPreviewVarName,
     nameError,
     patterns,
+    cssVariables = {}, // Default to empty object
 }: PatternEditorProps) {
     return (
         <div className={`pattern-editor ${isVisible ? "visible" : "hidden"}`}>
+            <button
+                className="remove-button"
+                onClick={() => onRemovePattern(pattern.id)}
+                disabled={patterns.length <= 1}
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="icon"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                </svg>
+                Remove<span className="visually-hidden-mobile"> pattern</span>
+            </button>
             <div className="pattern-header">
                 <div className="pattern-name-container">
                     <label className="input-label">Pattern Name</label>
@@ -43,13 +65,6 @@ export default function PatternEditor({
                     {nameError && <div className="error-message">{nameError}</div>}
                     <div className="input-help">Only letters, numbers, hyphens (-) and underscores (_) are allowed</div>
                 </div>
-                <button
-                    className="remove-button"
-                    onClick={() => onRemovePattern(pattern.id)}
-                    disabled={patterns.length <= 1}
-                >
-                    Remove
-                </button>
             </div>
 
             {/* Color Space Selector */}
@@ -89,6 +104,9 @@ export default function PatternEditor({
                 />
             </div>
 
+            {/* Color Swatch Preview */}
+            <ColorSwatches pattern={pattern} getPreviewVarName={getPreviewVarName} cssVariables={cssVariables} />
+
             {/* Pattern Variable Preview */}
             <div className="variable-preview">
                 <h3 className="subtitle">CSS Variable Names</h3>
@@ -106,9 +124,6 @@ export default function PatternEditor({
                     ))}
                 </p>
             </div>
-
-            {/* Color Swatch Preview */}
-            <ColorSwatches pattern={pattern} getPreviewVarName={getPreviewVarName} />
         </div>
     );
 }

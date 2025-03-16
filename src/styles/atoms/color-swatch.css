@@ -1,0 +1,163 @@
+.preview-container {
+    margin-top: 2rem;
+    margin-bottom: .5rem;
+}
+
+.color-swatches {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 0.5rem;
+    height: 4rem;
+}
+
+.color-swatch {
+    border-radius: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.color-swatch:hover {
+    transform: scale(1.15) translateY(-5px);
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+}
+
+/* Add these to your existing CSS file */
+.preview-help {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.color-swatch {
+    /* Convert from div to button */
+    padding: 0;
+    border: 1px solid var(--border-color);
+    background: none;
+    cursor: pointer;
+    position: relative;
+    border-radius: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.color-swatch:hover {
+    transform: scale(1.15) translateY(-5px);
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+}
+
+.color-swatch:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+    box-shadow: var(--shadow-md);
+    z-index: 10;
+}
+
+.color-swatch.copied {
+    outline: 2px solid var(--success-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+}
+
+.copied-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    color: white;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+}
+
+.copy-message {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--success-color);
+    min-height: 1.5rem;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.copy-message code {
+    background-color: var(--bg-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+/* Updated color preview styles */
+.color-preview {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    background-color: transparent; /* Reset button background */
+}
+
+.color-preview:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.color-preview:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+    transform: scale(1.05);
+}
+
+.color-preview.copied {
+    outline: 2px solid var(--success-color);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+}
+
+.color-preview-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.color-value-container {
+    flex: 1;
+    position: relative;
+}
+
+.small-copy-button {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.small-copy-button:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.small-copy-button:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Make sure the copy message in the color value container is positioned correctly */
+.color-value-container .copy-message {
+    position: absolute;
+    bottom: -1.25rem;
+    left: 0;
+    font-size: 0.75rem;
+    color: var(--success-color);
+    font-weight: 500;
+}

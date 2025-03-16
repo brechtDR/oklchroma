@@ -1,0 +1,35 @@
+.xyz-x-slider {
+    background: linear-gradient(to right, black, #ff8800);
+}
+
+.xyz-x-slider::-webkit-slider-thumb {
+    background: #ff8800;
+}
+
+.xyz-x-slider::-moz-range-thumb {
+    background: #ff8800;
+}
+
+.xyz-y-slider {
+    background: linear-gradient(to right, black, #88ff00);
+}
+
+.xyz-y-slider::-webkit-slider-thumb {
+    background: #88ff00;
+}
+
+.xyz-y-slider::-moz-range-thumb {
+    background: #88ff00;
+}
+
+.xyz-z-slider {
+    background: linear-gradient(to right, black, #0088ff);
+}
+
+.xyz-z-slider::-webkit-slider-thumb {
+    background: #0088ff;
+}
+
+.xyz-z-slider::-moz-range-thumb {
+    background: #0088ff;
+}

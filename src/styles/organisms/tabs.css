@@ -1,0 +1,72 @@
+.tabs {
+    display: flex;
+    padding-top: 1rem;
+    overflow-x: auto;
+    gap: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--bg-secondary);
+    padding-left: 1rem;
+}
+
+.tabs::-webkit-scrollbar {
+    height: 4px;
+}
+
+.tabs::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.tabs::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color);
+    border-radius: 4px;
+}
+
+.tab {
+    position: relative;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    box-shadow: var(--shadow-sm);
+    border-bottom: 4px solid var(--tab-color);
+    &::before {
+        content: attr(title);
+        display: block;
+        font-weight: 700;
+        height: 0px;
+        visibility: hidden;
+        overflow: hidden;
+    }
+}
+
+.tab:hover {
+    box-shadow: var(--shadow-md);
+    background: var(--tab-color);
+}
+
+.active-tab {
+    font-weight: 600;
+    box-shadow: var(--shadow-md);
+    background: var(--tab-color);
+}
+
+.add-tab-button {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: .25rem;
+    cursor: pointer;
+    margin-top: .5rem;
+    margin-left: .5rem;
+}
+
+.add-tab-button:hover {
+    color: var(--success-hover);
+}

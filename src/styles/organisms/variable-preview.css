@@ -1,0 +1,23 @@
+/* Variable Preview */
+.variable-preview {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.variable-list {
+    line-height: 1.8;
+    font-size: 0.875rem;
+}
+
+.variable-list code {
+    background-color: var(--bg-primary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    border: 1px solid var(--border-color);
+    color: var(--accent-color);
+    white-space: nowrap;
+}
