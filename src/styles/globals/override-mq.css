@@ -1,0 +1,35 @@
+@media (max-width: 640px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .pattern-header {
+        flex-direction: column;
+    }
+
+    .remove-button {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .color-preview-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .color-preview {
+        width: 100%;
+        height: 3rem;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .color-value {
+        width: 100%;
+    }
+
+    .color-swatches {
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+    }
+}

@@ -1,5 +1,4 @@
 // components/PatternEditor.tsx
-// components/PatternEditor.tsx
 import type { Pattern, ColorSpace } from "../types.ts";
 import { colorSpaceGroups } from "../utils/constants.ts";
 import ColorControls from "./color-controls.tsx";
@@ -15,6 +14,7 @@ interface PatternEditorProps {
     getPreviewVarName: (pattern: Pattern, percentage: number) => string;
     nameError: string;
     patterns: Pattern[];
+    cssVariables?: Record<string, string>; // Add this prop
 }
 
 export default function PatternEditor({
@@ -27,6 +27,7 @@ export default function PatternEditor({
     getPreviewVarName,
     nameError,
     patterns,
+    cssVariables = {}, // Default to empty object
 }: PatternEditorProps) {
     return (
         <div className={`pattern-editor ${isVisible ? "visible" : "hidden"}`}>
@@ -89,6 +90,9 @@ export default function PatternEditor({
                 />
             </div>
 
+            {/* Color Swatch Preview */}
+            <ColorSwatches pattern={pattern} getPreviewVarName={getPreviewVarName} cssVariables={cssVariables} />
+
             {/* Pattern Variable Preview */}
             <div className="variable-preview">
                 <h3 className="subtitle">CSS Variable Names</h3>
@@ -106,9 +110,6 @@ export default function PatternEditor({
                     ))}
                 </p>
             </div>
-
-            {/* Color Swatch Preview */}
-            <ColorSwatches pattern={pattern} getPreviewVarName={getPreviewVarName} />
         </div>
     );
 }

@@ -1,0 +1,65 @@
+.color-space-controls {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm) inset;
+}
+
+.color-preview-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.color-preview {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease;
+}
+
+.color-preview:hover {
+    transform: scale(1.05);
+}
+
+.color-value {
+    flex: 1;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    background-color: var(--bg-primary);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    max-width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.color-parameters {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .color-parameters {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.color-parameter {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.slider-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+}

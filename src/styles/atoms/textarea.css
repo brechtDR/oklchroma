@@ -1,0 +1,32 @@
+/* CSS Output */
+.output-container {
+    margin-bottom: 2rem;
+    background-color: var(--bg-secondary);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.css-output {
+    padding: 1.25rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 0.5rem;
+    overflow: auto;
+    font-size: 0.875rem;
+    height: 16rem;
+    width: 100%;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    resize: vertical;
+    border: 1px solid var(--border-color);
+    white-space: pre;
+    color: var(--text-primary);
+    line-height: 1.6;
+}

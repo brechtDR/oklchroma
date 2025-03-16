@@ -1,4 +1,3 @@
-// ColorPatternGenerator.tsx
 import CSSOutput from "@components/color-pattern-generator/components/css-output.tsx";
 import PatternEditor from "@components/color-pattern-generator/components/pattern-editor.tsx";
 import PatternTab from "@components/color-pattern-generator/components/pattern-tab.tsx";
@@ -10,7 +9,6 @@ import {
 } from "@components/color-pattern-generator/utils/color";
 import { encodePatterns, loadPatternsFromURL } from "@components/color-pattern-generator/utils/url";
 import { useState, useEffect, useRef } from "react";
-import "../../styles/ColorPatternGenerator.css";
 import type { Pattern, ColorSpace } from "./types";
 
 export default function ColorPatternGenerator(): React.ReactElement {
@@ -269,7 +267,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
             {/* Add a style element with our CSS variables */}
             <style dangerouslySetInnerHTML={{ __html: `:root {\n${styleBlock}\n}` }} />
 
-            <h1 className="title">Color Pattern Generator</h1>
+            <h1 className="title">OKLCHROMA</h1>
 
             {/* Pattern Tabs */}
             <div className="tabs">
@@ -303,6 +301,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
                     getPreviewVarName={getPreviewVarName}
                     nameError={nameError}
                     patterns={patterns}
+                    cssVariables={cssVariables}
                 />
             ))}
 

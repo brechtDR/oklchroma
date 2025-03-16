@@ -1,4 +1,4 @@
-// Define types for color spaces
+// Define color spaces
 export type ColorSpace =
     // Default
     | "oklab"
@@ -34,7 +34,7 @@ export interface ColorComponents {
     [key: string]: ColorSpaceDefinition;
 }
 
-// Define pattern interface
+// Define pattern types
 export interface Pattern {
     id: number;
     name: string;

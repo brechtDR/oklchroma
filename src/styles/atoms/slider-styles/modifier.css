@@ -1,0 +1,8 @@
+/* Base Modifier */
+.base-modifier {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+}

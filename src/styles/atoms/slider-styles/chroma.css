@@ -1,0 +1,24 @@
+/* Chroma/Saturation Sliders */
+.slider-c,
+.lch-c-slider,
+.oklch-c-slider,
+.slider-s,
+.hsl-s-slider {
+    background: linear-gradient(to right, #808080, #ff9900);
+}
+
+.slider-c::-webkit-slider-thumb,
+.lch-c-slider::-webkit-slider-thumb,
+.oklch-c-slider::-webkit-slider-thumb,
+.slider-s::-webkit-slider-thumb,
+.hsl-s-slider::-webkit-slider-thumb {
+    background: #ff9900;
+}
+
+.slider-c::-moz-range-thumb,
+.lch-c-slider::-moz-range-thumb,
+.oklch-c-slider::-moz-range-thumb,
+.slider-s::-moz-range-thumb,
+.hsl-s-slider::-moz-range-thumb {
+    background: #ff9900;
+}

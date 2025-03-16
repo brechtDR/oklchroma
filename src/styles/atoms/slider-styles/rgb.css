@@ -1,0 +1,86 @@
+/* Custom background for RGB sliders with CSS variables */
+.range-input[style*="--slider-color1"] {
+    background: linear-gradient(to right, var(--slider-color1), var(--slider-color2)) !important;
+}
+
+/*RGB*/
+.red-slider,
+.srgb-r-slider,
+.display-p3-r-slider,
+.a98-rgb-r-slider,
+.prophoto-rgb-r-slider,
+.rec2020-r-slider {
+    background: linear-gradient(to right, #000000, #ff0000);
+}
+
+.red-slider::-webkit-slider-thumb,
+.srgb-r-slider::-webkit-slider-thumb,
+.display-p3-r-slider::-webkit-slider-thumb,
+.a98-rgb-r-slider::-webkit-slider-thumb,
+.prophoto-rgb-r-slider::-webkit-slider-thumb,
+.rec2020-r-slider::-webkit-slider-thumb {
+    background: #ff5555;
+}
+
+.red-slider::-moz-range-thumb,
+.srgb-r-slider::-moz-range-thumb,
+.display-p3-r-slider::-moz-range-thumb,
+.a98-rgb-r-slider::-moz-range-thumb,
+.prophoto-rgb-r-slider::-moz-range-thumb,
+.rec2020-r-slider::-moz-range-thumb {
+    background: #ff5555;
+}
+
+.green-slider,
+.srgb-g-slider,
+.display-p3-g-slider,
+.a98-rgb-g-slider,
+.prophoto-rgb-g-slider,
+.rec2020-g-slider {
+    background: linear-gradient(to right, #000000, #00ff00);
+}
+
+.green-slider::-webkit-slider-thumb,
+.srgb-g-slider::-webkit-slider-thumb,
+.display-p3-g-slider::-webkit-slider-thumb,
+.a98-rgb-g-slider::-webkit-slider-thumb,
+.prophoto-rgb-g-slider::-webkit-slider-thumb,
+.rec2020-g-slider::-webkit-slider-thumb {
+    background: #55ff55;
+}
+
+.green-slider::-moz-range-thumb,
+.srgb-g-slider::-moz-range-thumb,
+.display-p3-g-slider::-moz-range-thumb,
+.a98-rgb-g-slider::-moz-range-thumb,
+.prophoto-rgb-g-slider::-moz-range-thumb,
+.rec2020-g-slider::-moz-range-thumb {
+    background: #55ff55;
+}
+
+.blue-slider,
+.srgb-b-slider,
+.display-p3-b-slider,
+.a98-rgb-b-slider,
+.prophoto-rgb-b-slider,
+.rec2020-b-slider {
+    background: linear-gradient(to right, #000000, #0000ff);
+}
+
+.blue-slider::-webkit-slider-thumb,
+.srgb-b-slider::-webkit-slider-thumb,
+.display-p3-b-slider::-webkit-slider-thumb,
+.a98-rgb-b-slider::-webkit-slider-thumb,
+.prophoto-rgb-b-slider::-webkit-slider-thumb,
+.rec2020-b-slider::-webkit-slider-thumb {
+    background: #5555ff;
+}
+
+.blue-slider::-moz-range-thumb,
+.srgb-b-slider::-moz-range-thumb,
+.display-p3-b-slider::-moz-range-thumb,
+.a98-rgb-b-slider::-moz-range-thumb,
+.prophoto-rgb-b-slider::-moz-range-thumb,
+.rec2020-b-slider::-moz-range-thumb {
+    background: #5555ff;
+}

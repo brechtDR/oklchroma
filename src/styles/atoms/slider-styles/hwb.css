@@ -1,0 +1,37 @@
+/* HWB Whiteness Slider */
+.whiteness-slider,
+.hwb-w-slider {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='var(--checkerboard-dark)' d='M0 0h4v4H0zM4 4h4v4H4z'/%3E%3C/svg%3E"),
+    linear-gradient(to right, transparent, white);
+    background-size: 8px 8px, 100% 100%;
+}
+
+.whiteness-slider::-webkit-slider-thumb,
+.hwb-w-slider::-webkit-slider-thumb {
+    background: white;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+.whiteness-slider::-moz-range-thumb,
+.hwb-w-slider::-moz-range-thumb {
+    background: white;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+/* HWB Blackness Slider */
+.blackness-slider,
+.hwb-b-slider {
+    background: linear-gradient(to right, transparent, black);
+}
+
+.blackness-slider::-webkit-slider-thumb,
+.hwb-b-slider::-webkit-slider-thumb {
+    background: black;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.blackness-slider::-moz-range-thumb,
+.hwb-b-slider::-moz-range-thumb {
+    background: black;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+}
