@@ -234,16 +234,16 @@ export default function ColorPatternGenerator(): React.ReactElement {
         // Make sure URL is updated before copying
         updateURLParam();
 
-        if (typeof navigator !== "undefined") {
-            navigator.clipboard
-                .writeText(currentUrl)
-                .then(() => {
-                    alert("URL copied to clipboard!");
-                })
-                .catch((err) => {
-                    console.error("Failed to copy URL", err);
-                });
-        }
+        // if (typeof navigator !== "undefined") {
+        //     navigator.clipboard
+        //         .writeText(currentUrl)
+        //         .then(() => {
+        //             alert("URL copied to clipboard!");
+        //         })
+        //         .catch((err) => {
+        //             console.error("Failed to copy URL", err);
+        //         });
+        // }
     };
 
     // Function to get color for display based on the pattern's color space
@@ -266,8 +266,6 @@ export default function ColorPatternGenerator(): React.ReactElement {
         <div className="container">
             {/* Add a style element with our CSS variables */}
             <style dangerouslySetInnerHTML={{ __html: `:root {\n${styleBlock}\n}` }} />
-
-            <h1 className="title">OKLCHROMA</h1>
 
             {/* Pattern Tabs */}
             <div className="tabs">

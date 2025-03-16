@@ -25,6 +25,7 @@
 @import "molecules/share-link.css";
 
 @import "organisms/color-control.css";
+@import "organisms/nav.css";
 @import "organisms/pattern-editor.css";
 @import "organisms/tabs.css";
 @import "organisms/variable-preview.css";

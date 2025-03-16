@@ -1,7 +1,11 @@
-h3 {
+.title {
+    font-family: var(--font-title);
+    text-align: center;
+    rotate: -5deg;
+    font-size: 3.8rem;
+    padding-top: 2rem;
 
 }
-
 .subtitle {
     font-family: var(--font-title);
     font-size: 1.7rem;

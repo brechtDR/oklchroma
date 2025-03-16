@@ -1,19 +1,44 @@
+---
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const {
+	title = "Oklchroma - OKLCH Color Pattern Generator",
+	description = "Create harmonious color patterns with Oklchroma, a powerful OKLCH-based color scale generator for designers and developers."
+} = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Barriecito&family=Poppins&display=swap" rel="stylesheet">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<meta name="generator" content={Astro.generator} />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Barriecito&family=Poppins&display=swap" rel="stylesheet">
 
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+	<title>{title}</title>
+	<meta name="description" content={description} />
+
+	<!-- Open Graph / Facebook -->
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content={Astro.url} />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+
+	<!-- Twitter -->
+	<meta property="twitter:card" content="summary_large_image" />
+	<meta property="twitter:url" content={Astro.url} />
+	<meta property="twitter:title" content={title} />
+	<meta property="twitter:description" content={description} />
+</head>
+<body>
+	<slot />
+</body>
 </html>
 
 <style>

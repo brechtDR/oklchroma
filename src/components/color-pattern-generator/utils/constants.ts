@@ -135,7 +135,7 @@ export const componentColors: { [key: string]: string } = {
     g: "#55ff55",
     b: "#5555ff",
     h: "", // We'll use the CSS class for hue
-    l: "#aaaaaa",
+    l: "#ccc",
     c: "#ff9900",
     s: "#ff9900",
     w: "#ffffff",

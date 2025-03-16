@@ -25,25 +25,80 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
+/* Enhanced ShareLink component styles */
 .share-button {
     padding: 0.75rem 1.25rem;
-    background-color: var(--success-color);
+    background-color: var(--accent-color);
     color: white;
     border: none;
     border-radius: 0 0.5rem 0.5rem 0;
     cursor: pointer;
     font-weight: 500;
     transition: all 0.2s ease;
-    box-shadow: var(--shadow-sm);
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    min-width: 120px;
+    justify-content: center;
 }
 
 .share-button:hover {
-    background-color: var(--success-hover);
-    transform: translateY(-2px);
+    background-color: var(--accent-hover);
     box-shadow: var(--shadow-md);
+}
+
+.share-button:focus {
+    outline: 2px solid var(--accent-hover);
+    outline-offset: 2px;
+}
+
+.share-button.copied {
+    background-color: var(--success-color);
+}
+
+.copy-icon {
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+.copy-success-message {
+    margin-top: 0.5rem;
+    color: var(--success-color);
+    font-size: 0.875rem;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.share-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-right: none;
+    border-radius: 0.5rem 0 0 0.5rem;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+}
+
+.share-input:focus {
+    outline: none;
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 1px var(--success-color);
+}
+
+.share-container {
+    position: relative;
+    margin-bottom: 2rem;
+    background-color: var(--bg-secondary);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.share-container .subtitle {
+    margin-bottom: 1rem;
 }
 
 .share-description {

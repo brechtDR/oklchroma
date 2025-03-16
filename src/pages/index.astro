@@ -4,8 +4,17 @@ import ColorPatternGenerator from '../components/color-pattern-generator/color-p
 import '../styles/main.css';
 ---
 
-<Layout title="Color Pattern Generator">
+<Layout title="Oklchroma - OKLCH Color Pattern Generator">
+	<nav>
+		<ul>
+			<li><a href="/" class="active">Editor</a></li>
+			<li><a href="/about">About</a></li>
+		</ul>
+	</nav>
 	<main>
+		<div class="container">
+			<h1 class="title">OKLCHROMA</h1>
+		</div>
 		<ColorPatternGenerator client:load />
 	</main>
 </Layout>
