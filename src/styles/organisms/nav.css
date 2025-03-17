@@ -1,4 +1,8 @@
 nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
     background-color: var(--bg-secondary);
     box-shadow: var(--shadow-sm);
     padding: 1rem 2rem;

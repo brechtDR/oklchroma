@@ -27,3 +27,7 @@
     white-space: nowrap;
     border-width: 0;
 }
+
+strong {
+    font-weight: 600;
+}

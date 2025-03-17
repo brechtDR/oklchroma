@@ -37,7 +37,7 @@ export default function ColorSwatches({ pattern, getPreviewVarName, cssVariables
 
     return (
         <div className="preview-container">
-            <h3 className="subtitle">Preview</h3>
+            <h2 className="subtitle">Preview</h2>
             <p className="preview-help">Click on a color to copy its CSS value to clipboard</p>
             <div className="color-swatches" role="grid" aria-label="Color shades for pattern">
                 {[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((i) => {

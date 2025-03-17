@@ -109,7 +109,7 @@ export default function PatternEditor({
 
             {/* Pattern Variable Preview */}
             <div className="variable-preview">
-                <h3 className="subtitle">CSS Variable Names</h3>
+                <h2 className="subtitle">CSS Variable Names</h2>
                 <p className="variable-list">
                     Base: <code>--{pattern.name}</code>, <code>--{pattern.name}-base</code>
                     <br />
