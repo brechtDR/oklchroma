@@ -15,7 +15,11 @@ const {
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width" />
+	<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<link rel="manifest" href="/site.webmanifest" />
 	<meta name="generator" content={Astro.generator} />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,17 +28,19 @@ const {
 	<title>{title}</title>
 	<meta name="description" content={description} />
 
-	<!-- Open Graph / Facebook -->
+	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
 	<meta property="og:url" content={Astro.url} />
 	<meta property="og:title" content={title} />
+	<meta property="og:image" content="https://oklchroma.vercel.app/og-image.png" />
 	<meta property="og:description" content={description} />
 
-	<!-- Twitter -->
+
 	<meta property="twitter:card" content="summary_large_image" />
 	<meta property="twitter:url" content={Astro.url} />
 	<meta property="twitter:title" content={title} />
 	<meta property="twitter:description" content={description} />
+	<meta property="twitter:image" content="https://oklchroma.vercel.app/og-image.png" />
 </head>
 <body>
 	<slot />
