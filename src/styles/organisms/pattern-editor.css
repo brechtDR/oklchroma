@@ -67,7 +67,6 @@
     gap: .25rem;
     cursor: pointer;
     color: var(--danger-color);
-    box-shadow: var(--shadow-sm);
 }
 
 .remove-button:hover:not(:disabled) {
@@ -75,7 +74,7 @@
 }
 
 .remove-button:disabled {
-   color: var(--text-secondary);
+    color: var(--text-secondary);
     opacity: 0.5;
     cursor: not-allowed;
 }
