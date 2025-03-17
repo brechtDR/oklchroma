@@ -9,16 +9,96 @@ import '../styles/main.css';
             <li><a href="/">Editor</a></li>
             <li><a href="/about" class="active">About</a></li>
         </ul>
+
+        <div class="buy-coffee">
+            <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy me a coffee', 'var(--color-primary-500)', 'H2H2ZNUST');kofiwidget2.draw();</script>
+            </div>
     </nav>
     <main class="about-page">
         <div class="container">
             <h1 class="title">About</h1>
 
+            <section class="about-section">
+                <h2>What is Oklchroma?</h2>
+                <p>
+                    Oklchroma is a color pattern generator that helps designers and developers create harmonious color scales based on the OKLCH color space. Instead of manually defining each shade, Oklchroma generates a complete set of color variables based on a single base color and using mathematical formulas in CSS to generate the rest of the colors.
+                </p>
+            </section>
 
-            <footer class="about-footer">
-                <p>© 2025 Oklchroma. All rights reserved.</p>
-                <p>Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a> and <a href="https://reactjs.org" target="_blank" rel="noopener noreferrer">React</a>.</p>
-            </footer>
+            <section class="about-section">
+                <h2>Why create this?</h2>
+                <p>While I still believe that a handmade color pattern is far more superior, I got this idea from a talk I saw at <a href="https://www.youtube.com/watch?v=su6WA0kUUJE" target="_blank">CSS Day 2024 by Matthias Ott</a>. It uses trigonometric functions in CSS to adjust the lightness of the primary input. The cleaver thing that was explained in the presentation is that a trigonometric function (sin()) is used to adjust the Chroma.</p>
+                <p>I thought this idea was so clever and was curious how it would work with different color inputs and this is how that little idea was born.</p>
+
+                <div class="buy-coffee">
+                    <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy me a coffee', 'var(--color-primary-500)', 'H2H2ZNUST');kofiwidget2.draw();</script>
+                    </div>
+            </section>
+            <section class="about-section">
+                <h2>About the Creator</h2>
+                <p>
+                    Oklchroma was created by <a href="https://utilitybend.com">Brecht De Ruyte (utilitybend.com)</a> . However, I shouldn't take full credit for this as explained in the previous section, I learned about the CSS idea by Matthias Ott.<br/>
+                    But a little interface can be fun to play around with.
+                </p>
+            </section>
+            <section class="about-section">
+                <h2>Technical Details</h2>
+                <p>
+                    Oklchroma uses the mathematical properties of the sine function to create natural-feeling color progressions. The formula used is:
+                </p>
+<pre class="code-block">
+{`
+oklch(
+  from var(--color) {percentage}%
+  calc(var(--color-base) + (sin({multiplier} * pi) * c))
+  h
+)`}</pre>
+                <p>
+                    This formula maintains the hue while adjusting lightness and chroma in a way that feels natural across the entire scale.
+                </p>
+            </section>
+            <section class="about-section">
+                <h2>How to Use Oklchroma</h2>
+                <ol class="feature-list">
+                    <li>
+                        <strong>Choose a variable name:</strong> Choose a variable name for your color pattern.
+                    </li>
+                    <li>
+                        <strong>Choose primary color space:</strong> You can select a color space from your choosing.
+                    </li>
+                    <li>
+                        <strong>Choose a base color:</strong> Select your primary color using the color sliders.
+                    </li>
+                    <li>
+                        <strong>Adjust the base modifier:</strong> Fine-tune how the color scales are generated.
+                    </li>
+                    <li>
+                        <strong>Preview the scale:</strong> See all ten shades of your color, from 10% to 100%.
+                    </li>
+                    <li>
+                        <strong>Copy the CSS:</strong> Get ready-to-use CSS variables for your project.
+                    </li>
+                    <li>
+                        <strong>Share your palette:</strong> Generate a unique URL to share your color system with others.
+                    </li>
+                </ol>
+            </section>
+
+
+
+            <section class="about-section">
+                <h2>Browser Support</h2>
+                <p>
+                    Oklchroma generates CSS that works with modern browsers that support CSS Color Module Level 4, including:
+                </p>
+                <ul class="feature-list">
+                    <li>Chrome 119+</li>
+                    <li>Firefox 128+</li>
+                    <li>Safari 16.4+</li>
+                    <li>Edge 119+</li>
+                </ul>
+            </section>
+
         </div>
     </main>
 </Layout>
@@ -27,6 +107,9 @@ import '../styles/main.css';
     .about-page {
         padding: 2rem 0;
         color: var(--text-primary);
+        a {
+            color: currentColor;
+        }
     }
 
     .about-section {
@@ -34,6 +117,7 @@ import '../styles/main.css';
     }
 
     .about-section h2 {
+        font-family: var(--font-title);
         color: var(--accent-color);
         margin-bottom: 1rem;
         font-size: 1.75rem;
@@ -66,20 +150,5 @@ import '../styles/main.css';
         border: 1px solid var(--border-color);
     }
 
-    .about-footer {
-        margin-top: 4rem;
-        padding-top: 2rem;
-        border-top: 1px solid var(--border-color);
-        font-size: 0.875rem;
-        color: var(--text-secondary);
-    }
 
-    .about-footer a {
-        color: var(--accent-color);
-        text-decoration: none;
-    }
-
-    .about-footer a:hover {
-        text-decoration: underline;
-    }
 </style>

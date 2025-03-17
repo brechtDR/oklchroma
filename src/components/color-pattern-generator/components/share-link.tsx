@@ -31,7 +31,7 @@ export default function ShareLink({ url, onCopy }: ShareLinkProps) {
 
     return (
         <div className="share-container">
-            <h3 className="subtitle">Share Link</h3>
+            <h2 className="subtitle">Share Link</h2>
             <div className="share-input-container">
                 <input
                     type="text"
