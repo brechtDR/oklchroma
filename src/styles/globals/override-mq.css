@@ -7,10 +7,6 @@
         flex-direction: column;
     }
 
-    .remove-button {
-        top: .5rem;
-    }
-
     .color-value-container {
         width: 100%;
     }
