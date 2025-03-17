@@ -132,8 +132,8 @@ export const codeToColorSpace: Record<string, ColorSpace> = Object.entries(color
 // Define component colors for sliders
 export const componentColors: { [key: string]: string } = {
     r: "#ff5555",
-    g: "#55ff55",
-    b: "#5555ff",
+    g: "#18a818",
+    b: "#0088ff",
     h: "", // We'll use the CSS class for hue
     l: "#ccc",
     c: "#ff9900",
