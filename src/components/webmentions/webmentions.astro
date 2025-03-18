@@ -1,9 +1,9 @@
 ---
-// components/Webmentions.astro
-import WebmentionsReact from './webmentions';
+import Comments from "./webmentions";
+const { mentionUrl } = Astro.props;
 ---
 
-<WebmentionsReact client:load />
+<Comments client:load mentionUrl="https://oklchroma.utilitybend.com/" />
 
 <style is:global>
     /* styles/Webmentions.css */
