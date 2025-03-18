@@ -1,6 +1,6 @@
 /* Enhanced CSS Output component styles */
 .copy-button {
-    padding: 0.5rem 1.25rem;
+    padding: 0.5rem 1rem;
     background-color: var(--accent-color);
     color: white;
     border: none;
@@ -12,7 +12,6 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    min-width: 180px;
     justify-content: center;
 }
 

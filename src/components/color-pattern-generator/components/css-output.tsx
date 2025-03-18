@@ -27,7 +27,9 @@ export default function CssOutput({ css }: CSSOutputProps) {
     return (
         <div className="output-container">
             <div className="output-header">
-                <h2 className="subtitle">Generated CSS</h2>
+                <h2 className="subtitle">
+                    <span className="visually-hidden-mobile">Generated </span>CSS
+                </h2>
                 <button
                     className={`copy-button ${copied ? "copied" : ""}`}
                     onClick={handleCopy}

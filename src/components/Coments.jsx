@@ -1,121 +1,36 @@
 import React, { useState, useEffect } from "react";
 import sanitizeHTML from "sanitize-html";
 
-const webmentionskey = "L3A7c40bG_CoxTdmiE_U_A";
+const webmentionskey = "Bxx6feH5tJSN6EtmrXDU6A";
 
 function WebmentionList({ mentionUrl }) {
     const [filteredData, setFilteredData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchWebmentions = async () => {
-            setIsLoading(true);
-            setError(null);
+        const url = new URL("https://webmention.io/api/mentions.jf2");
+        url.searchParams.set("token", webmentionskey);
 
-            try {
-                // Try with the exact URL first
-                const exactUrl = new URL("https://webmention.io/api/mentions.jf2");
-                exactUrl.searchParams.set("token", webmentionskey);
-                exactUrl.searchParams.set("target", mentionUrl);
-                ["like-of", "repost-of", "mention-of"].forEach((property) => {
-                    exactUrl.searchParams.append("wm-property[]", property);
-                });
+        url.searchParams.set("target", mentionUrl);
+        ["like-of", "repost-of", "mention-of"].forEach((property) => {
+            url.searchParams.append("wm-property[]", property);
+        });
 
-                console.log("Fetching webmentions for:", mentionUrl);
-                console.log("API URL:", exactUrl.toString());
+        console.log(url);
+        const fetchData = async () => {
+            const response = await fetch(url.toString());
+            const body = await response.json();
+            const myWebmentions = body.children;
 
-                const response = await fetch(exactUrl.toString());
-                const body = await response.json();
-                let myWebmentions = body.children || [];
-
-                // If no mentions found for the subdomain, try the domain-only approach
-                if (myWebmentions.length === 0) {
-                    console.log("No mentions found for subdomain, trying domain-only approach");
-
-                    // Extract domain from the URL
-                    const urlObj = new URL(mentionUrl);
-                    const domain = urlObj.hostname.split(".").slice(-2).join(".");
-
-                    const domainUrl = new URL("https://webmention.io/api/mentions.jf2");
-                    domainUrl.searchParams.set("token", webmentionskey);
-                    domainUrl.searchParams.set("domain", domain);
-                    ["like-of", "repost-of", "mention-of"].forEach((property) => {
-                        domainUrl.searchParams.append("wm-property[]", property);
-                    });
-
-                    console.log("Trying with domain:", domain);
-                    console.log("Domain API URL:", domainUrl.toString());
-
-                    const domainResponse = await fetch(domainUrl.toString());
-                    const domainBody = await domainResponse.json();
-                    myWebmentions = domainBody.children || [];
-
-                    // Filter mentions to those potentially related to your subdomain
-                    // This is a rough approach - might need refinement
-                    const subdomainPart = urlObj.hostname.split(".")[0];
-                    myWebmentions = myWebmentions.filter((mention) => {
-                        const source = mention["wm-source"] || "";
-                        return (
-                            source.includes(subdomainPart) ||
-                            (mention.content &&
-                                mention.content.text &&
-                                mention.content.text.toLowerCase().includes(subdomainPart))
-                        );
-                    });
-                }
-
-                console.log("Found webmentions:", myWebmentions.length);
-
-                const data = webmentionsByUrl(myWebmentions);
-                setFilteredData(data);
-            } catch (err) {
-                console.error("Error fetching webmentions:", err);
-                setError("Failed to fetch webmentions");
-            } finally {
-                setIsLoading(false);
-            }
+            const data = webmentionsByUrl(myWebmentions);
+            setFilteredData(data);
         };
 
         // Only fetch data if mentionUrl is available
         if (mentionUrl) {
-            void fetchWebmentions();
+            void fetchData();
         }
     }, [mentionUrl]);
-
-    if (isLoading) {
-        return <div className="webmentions-loading">Loading webmentions...</div>;
-    }
-
-    if (error) {
-        return <div className="webmentions-error">Error: {error}</div>;
-    }
-
-    if (!Object.entries(filteredData).length) {
-        return (
-            <div className="webmentions-empty">
-                <h3>Be the first to share this page!</h3>
-                <p>
-                    Share on{" "}
-                    <a
-                        href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(mentionUrl)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Twitter
-                    </a>{" "}
-                    or{" "}
-                    <a
-                        href={`https://mastodon.social/share?text=${encodeURIComponent(mentionUrl)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Mastodon
-                    </a>
-                </p>
-            </div>
-        );
-    }
+    if (!Object.entries(filteredData).length) return null;
 
     return (
         <section className="comments">
@@ -198,7 +113,6 @@ function WebmentionList({ mentionUrl }) {
                                         <a
                                             href={content["wm-source"]}
                                             target="_blank"
-                                            rel="noopener noreferrer"
                                             title={content.author.name}
                                             className={
                                                 content.author.photo ? "comments-avatar" : "comments-avatar placeholder"
@@ -231,7 +145,6 @@ function WebmentionList({ mentionUrl }) {
                                         <a
                                             href={content.author.url}
                                             target="_blank"
-                                            rel="noopener noreferrer"
                                             title={content.author.name}
                                             className="comments-avatar"
                                         >

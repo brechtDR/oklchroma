@@ -23,6 +23,7 @@
     color: var(--text-primary);
     font-size: 0.875rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    min-width: 0;
 }
 
 /* Enhanced ShareLink component styles */
@@ -67,18 +68,6 @@
     font-size: 0.875rem;
     font-weight: 500;
     animation: fadeIn 0.3s ease-out;
-}
-
-.share-input {
-    flex: 1;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-right: none;
-    border-radius: 0.5rem 0 0 0.5rem;
-    background-color: var(--input-bg);
-    color: var(--text-primary);
-    font-size: 0.875rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 .share-input:focus {
