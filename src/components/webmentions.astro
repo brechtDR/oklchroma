@@ -1,0 +1,258 @@
+---
+const domain = 'oklchroma.utilitybend.com';
+const url = Astro.url.pathname;
+const targetUrl = `https://${domain}${url}`;
+const apiUrl = `https://webmention.io/api/mentions.jf2?target=${encodeURIComponent(targetUrl)}&per-page=100`;
+
+// Fetch webmentions
+let webmentions = [];
+try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    webmentions = data.children || [];
+} catch (error) {
+    console.error('Error fetching webmentions:', error);
+}
+
+// Group webmentions by type
+const likes = webmentions.filter(mention => mention['wm-property'] === 'like-of');
+const reposts = webmentions.filter(mention =>
+    mention['wm-property'] === 'repost-of' || mention['wm-property'] === 'mention-of'
+);
+const replies = webmentions.filter(mention => mention['wm-property'] === 'in-reply-to');
+
+// Function to get unique authors to prevent duplicates
+const getUniqueAuthors = (mentions) => {
+    const uniqueAuthors = new Map();
+    mentions.forEach(mention => {
+        if (mention.author && mention.author.url) {
+            uniqueAuthors.set(mention.author.url, mention.author);
+        }
+    });
+    return Array.from(uniqueAuthors.values());
+};
+
+const uniqueLikes = getUniqueAuthors(likes);
+const uniqueReposts = getUniqueAuthors(reposts);
+const uniqueReplies = getUniqueAuthors(replies);
+
+const hasWebmentions = uniqueLikes.length > 0 || uniqueReposts.length > 0 || uniqueReplies.length > 0;
+---
+
+{hasWebmentions && (
+<section class="webmentions">
+    <div class="container">
+        <h2>Interactions</h2>
+
+        {uniqueLikes.length > 0 && (
+                <div class="webmention-group">
+                    <h3>
+                        <span class="webmention-icon">❤️</span>
+                        Likes
+                    </h3>
+                    <div class="avatar-grid">
+                        {uniqueLikes.map(author => (
+                                <a
+                                        href={author.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="avatar-link"
+                                        title={author.name || 'Someone liked this'}
+                                >
+                                    {author.photo ? (
+                                            <img
+                                                    src={author.photo}
+                                                    alt={author.name || 'Avatar'}
+                                                    class="avatar-img"
+                                                    loading="lazy"
+                                                    onError="this.src='https://ui-avatars.com/api/?name=U&background=random'"
+                                            />
+                                    ) : (
+                                            <div class="avatar-placeholder">
+                                                {author.name ? author.name.charAt(0).toUpperCase() : 'U'}
+                                            </div>
+                                    )}
+                                </a>
+                        ))}
+                    </div>
+                </div>
+        )}
+
+        {uniqueReposts.length > 0 && (
+                <div class="webmention-group">
+                    <h3>
+                        <span class="webmention-icon">🔄</span>
+                        Shares & Mentions
+                    </h3>
+                    <div class="avatar-grid">
+                        {uniqueReposts.map(author => (
+                                <a
+                                        href={author.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="avatar-link"
+                                        title={author.name || 'Someone shared this'}
+                                >
+                                    {author.photo ? (
+                                            <img
+                                                    src={author.photo}
+                                                    alt={author.name || 'Avatar'}
+                                                    class="avatar-img"
+                                                    loading="lazy"
+                                                    onError="this.src='https://ui-avatars.com/api/?name=U&background=random'"
+                                            />
+                                    ) : (
+                                            <div class="avatar-placeholder">
+                                                {author.name ? author.name.charAt(0).toUpperCase() : 'U'}
+                                            </div>
+                                    )}
+                                </a>
+                        ))}
+                    </div>
+                </div>
+        )}
+
+        {uniqueReplies.length > 0 && (
+                <div class="webmention-group">
+                    <h3>
+                        <span class="webmention-icon">💬</span>
+                        Replies
+                    </h3>
+                    <div class="avatar-grid">
+                        {uniqueReplies.map(author => (
+                                <a
+                                        href={author.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="avatar-link"
+                                        title={author.name || 'Someone replied to this'}
+                                >
+                                    {author.photo ? (
+                                            <img
+                                                    src={author.photo}
+                                                    alt={author.name || 'Avatar'}
+                                                    class="avatar-img"
+                                                    loading="lazy"
+                                                    onError="this.src='https://ui-avatars.com/api/?name=U&background=random'"
+                                            />
+                                    ) : (
+                                            <div class="avatar-placeholder">
+                                                {author.name ? author.name.charAt(0).toUpperCase() : 'U'}
+                                            </div>
+                                    )}
+                                </a>
+                        ))}
+                    </div>
+                </div>
+        )}
+
+        <div class="webmention-footer">
+            <p>
+                Interactions collected via
+                <a href="https://webmention.io" target="_blank" rel="noopener noreferrer">webmention.io</a>
+                and
+                <a href="https://brid.gy" target="_blank" rel="noopener noreferrer">brid.gy</a>
+            </p>
+        </div>
+    </div>
+</section>
+    )}
+
+<style>
+    .webmentions {
+        padding: 3rem 0;
+        background-color: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+        margin-top: 2rem;
+    }
+
+    .webmentions h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: var(--accent-color);
+        font-size: 1.8rem;
+    }
+
+    .webmention-group {
+        margin-bottom: 2rem;
+    }
+
+    .webmention-group h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+
+    .webmention-icon {
+        font-size: 1.4rem;
+    }
+
+    .avatar-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .avatar-link {
+        text-decoration: none;
+        transition: transform 0.2s ease;
+    }
+
+    .avatar-link:hover {
+        transform: scale(1.1);
+    }
+
+    .avatar-img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--accent-color);
+        background-color: var(--bg-tertiary);
+    }
+
+    .avatar-placeholder {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--accent-color);
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border: 2px solid var(--accent-color);
+    }
+
+    .webmention-footer {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+
+    .webmention-footer a {
+        color: var(--accent-color);
+        text-decoration: none;
+    }
+
+    .webmention-footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .webmentions {
+            padding: 2rem 1rem;
+        }
+
+        .avatar-img,
+        .avatar-placeholder {
+            width: 40px;
+            height: 40px;
+        }
+    }
+</style>
