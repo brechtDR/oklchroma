@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ColorPatternGenerator from '../components/color-pattern-generator/color-pattern-generator';
-import Webmentions from '../components/webmentions.astro';
+import Webmentions from '../components/webmentions/webmentions.astro';
 import '../styles/main.css';
 ---
 
@@ -21,6 +21,6 @@ import '../styles/main.css';
 		</div>
 
 		<ColorPatternGenerator client:load />
-
+		<!--<Webmentions />-->
 	</main>
 </Layout>

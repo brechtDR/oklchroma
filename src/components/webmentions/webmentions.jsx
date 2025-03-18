@@ -5,31 +5,45 @@ const webmentionskey = "Bxx6feH5tJSN6EtmrXDU6A";
 
 function WebmentionList({ mentionUrl }) {
     const [filteredData, setFilteredData] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
+        if (!mentionUrl) return;
+
+        setIsLoading(true);
+        setError(null);
+
         const url = new URL("https://webmention.io/api/mentions.jf2");
         url.searchParams.set("token", webmentionskey);
-
         url.searchParams.set("target", mentionUrl);
         ["like-of", "repost-of", "mention-of"].forEach((property) => {
             url.searchParams.append("wm-property[]", property);
         });
 
-        console.log(url);
         const fetchData = async () => {
-            const response = await fetch(url.toString());
-            const body = await response.json();
-            const myWebmentions = body.children;
-
-            const data = webmentionsByUrl(myWebmentions);
-            setFilteredData(data);
+            try {
+                const response = await fetch(url.toString());
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const body = await response.json();
+                const myWebmentions = body.children;
+                const data = webmentionsByUrl(myWebmentions);
+                setFilteredData(data);
+            } catch (err) {
+                setError(err);
+                console.error("Error fetching webmentions:", err);
+            } finally {
+                setIsLoading(false);
+            }
         };
 
-        // Only fetch data if mentionUrl is available
-        if (mentionUrl) {
-            void fetchData();
-        }
+        void fetchData();
     }, [mentionUrl]);
+
+    if (isLoading) return <p>Loading webmentions...</p>;
+    if (error) return <p>Error loading webmentions: {error.message}</p>;
     if (!Object.entries(filteredData).length) return null;
 
     return (
