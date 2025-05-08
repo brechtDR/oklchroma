@@ -1,4 +1,3 @@
-// components/ShareLink.tsx
 import { useState } from "react";
 
 interface ShareLinkProps {

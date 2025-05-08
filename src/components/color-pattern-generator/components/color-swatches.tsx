@@ -1,4 +1,3 @@
-// components/ColorSwatches.tsx
 import { useState } from "react";
 import type { Pattern } from "../types.ts";
 
@@ -25,7 +24,7 @@ export default function ColorSwatches({ pattern, getPreviewVarName, cssVariables
                 // Set this index as copied for feedback
                 setCopiedIndex(percentage);
 
-                // Reset the copied status after 2 seconds
+                // Reset the copied status after 2 seconds, maybe i should create a separate function for this
                 setTimeout(() => {
                     setCopiedIndex(null);
                 }, 2000);

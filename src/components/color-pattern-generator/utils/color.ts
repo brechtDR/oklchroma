@@ -1,4 +1,3 @@
-// utils/colorUtils.ts
 import type { ColorSpace } from "../types.ts";
 import { colorSpaceComponents } from "./constants.ts";
 

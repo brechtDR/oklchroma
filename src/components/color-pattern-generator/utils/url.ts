@@ -1,4 +1,3 @@
-// utils/urlUtils.ts
 import type { Pattern, ColorSpace } from "../types.ts";
 import { getDefaultColorValues, handleColorSpaceChange } from "./color.ts";
 import { colorSpaceToCode, codeToColorSpace, colorSpaceComponents } from "./constants.ts";

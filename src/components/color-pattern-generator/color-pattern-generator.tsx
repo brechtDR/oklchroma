@@ -30,7 +30,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
     // Ref for debouncing URL updates
     const urlUpdateTimeoutRef = useRef<number | null>(null);
 
-    // Safe initialization that works with SSR
+    // Safe initialization
     useEffect(() => {
         // Load patterns from URL
         const loadedPatterns = loadPatternsFromURL();
@@ -45,7 +45,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
     useEffect(() => {
         if (typeof window !== "undefined") {
             generateCSS();
-            // Don't update URL here - we'll do it with debounce
+            // Don't update URL here - as that became buggy, which is why a little timeout set below to create a debounce
         }
     }, [patterns]);
 
@@ -181,6 +181,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
     };
 
     const generateCSS = (): void => {
+        // Messy css generator, but hey, it works
         let css = `:root {\n`;
         const cssVars: Record<string, string> = {};
 
@@ -234,16 +235,6 @@ export default function ColorPatternGenerator(): React.ReactElement {
         // Make sure URL is updated before copying
         updateURLParam();
 
-        // if (typeof navigator !== "undefined") {
-        //     navigator.clipboard
-        //         .writeText(currentUrl)
-        //         .then(() => {
-        //             alert("URL copied to clipboard!");
-        //         })
-        //         .catch((err) => {
-        //             console.error("Failed to copy URL", err);
-        //         });
-        // }
     };
 
     // Function to get color for display based on the pattern's color space

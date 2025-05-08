@@ -1,4 +1,3 @@
-// components/CSSOutput.tsx
 import { useState } from "react";
 
 interface CSSOutputProps {

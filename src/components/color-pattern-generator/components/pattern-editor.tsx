@@ -1,4 +1,3 @@
-// components/PatternEditor.tsx
 import type { Pattern, ColorSpace } from "../types.ts";
 import { colorSpaceGroups } from "../utils/constants.ts";
 import ColorControls from "./color-controls.tsx";

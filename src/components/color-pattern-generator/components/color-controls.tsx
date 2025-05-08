@@ -1,4 +1,3 @@
-// components/ColorControls.tsx
 import { getSliderClassName, getRGBSliderVars } from "@components/color-pattern-generator/utils/color";
 import { useState } from "react";
 import type { Pattern } from "../types.ts";
