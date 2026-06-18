@@ -1,4 +1,4 @@
-/* Lightness/Luminance Sliders */
+/* Lightness/Luminance Sliders — always neutral grayscale, never tinted */
 .slider-l,
 .oklab-l-slider,
 .lch-l-slider,
@@ -6,22 +6,4 @@
 .lab-l-slider,
 .hsl-l-slider {
     background: linear-gradient(to right, #000000, #ffffff);
-}
-
-.slider-l::-webkit-slider-thumb,
-.oklab-l-slider::-webkit-slider-thumb,
-.lch-l-slider::-webkit-slider-thumb,
-.oklch-l-slider::-webkit-slider-thumb,
-.lab-l-slider::-webkit-slider-thumb,
-.hsl-l-slider::-webkit-slider-thumb {
-    background: #aaaaaa;
-}
-
-.slider-l::-moz-range-thumb,
-.oklab-l-slider::-moz-range-thumb,
-.lch-l-slider::-moz-range-thumb,
-.oklch-l-slider::-moz-range-thumb,
-.lab-l-slider::-moz-range-thumb,
-.hsl-l-slider::-moz-range-thumb {
-    background: #aaaaaa;
 }

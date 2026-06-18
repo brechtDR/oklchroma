@@ -1,21 +1,125 @@
-.color-space-selector {
-    margin-bottom: 1.5rem;
+/* Inline-prefixed field: a bordered control with a small uppercase label prefix */
+.field {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 2.35rem;
+    padding-inline: 0.75rem;
+    border: 1px solid color-mix(in oklab, var(--s-surface-border), transparent 12%);
+    border-radius: var(--s-radius-md);
+    background-color: var(--input-bg);
+    cursor: text;
+    transition:
+        border-color var(--transition-fast, 0.2s) ease,
+        box-shadow var(--transition-fast, 0.2s) ease;
+}
+
+.field:focus-within {
+    border-color: var(--s-color-brand-primary);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--s-color-brand-primary), transparent 78%);
+}
+
+.field--error {
+    border-color: var(--danger-color);
+}
+
+.field-prefix {
+    flex-shrink: 0;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    user-select: none;
+}
+
+.field-control {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 0.86rem;
+    line-height: 1;
+    padding-block: 0.5rem;
+    outline: none;
+    margin: 0;
+}
+
+.field--select {
+    cursor: pointer;
 }
 
 .color-space-select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-radius: 0.5rem;
-    background-color: var(--input-bg);
-    color: var(--text-primary);
-    font-size: 1rem;
+    appearance: none;
+    -webkit-appearance: none;
     cursor: pointer;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    padding-inline-end: 1.15rem;
+    padding-block: 0.5rem;
+    background-image: linear-gradient(135deg, transparent 50%, currentcolor 50%),
+        linear-gradient(45deg, currentcolor 50%, transparent 50%);
+    background-position:
+        right 0.15rem center,
+        right calc(0.15rem + 5px) center;
+    background-size:
+        5px 5px,
+        5px 5px;
+    background-repeat: no-repeat;
+    color: var(--text-primary);
 }
 
-.color-space-select:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+.color-space-select optgroup,
+.color-space-select option {
+    background-color: var(--s-surface-1);
+    color: var(--text-primary);
+}
+
+@container form (width >= 460px) {
+    .field {
+        min-height: 1.95rem;
+        padding-inline: 0.62rem;
+        border-radius: 0.5rem;
+        gap: 0.42rem;
+    }
+
+    .field-prefix {
+        font-size: 0.58rem;
+        letter-spacing: 0.07em;
+    }
+
+    .field-control {
+        font-size: 0.82rem;
+        line-height: 1;
+        padding-block: 0;
+        block-size: calc(1.95rem - 2px);
+    }
+
+    .color-space-select {
+        padding-block: 0;
+        padding-inline-end: 1rem;
+        background-size:
+            4px 4px,
+            4px 4px;
+        background-position:
+            right 0.12rem center,
+            right calc(0.12rem + 4px) center;
+    }
+}
+
+@media (width >= 900px) {
+    .field {
+        min-height: 1.9rem;
+        padding-inline: 0.58rem;
+        gap: 0.38rem;
+    }
+
+    .field-prefix {
+        font-size: 0.56rem;
+        letter-spacing: 0.065em;
+    }
+
+    .field-control {
+        font-size: 0.8rem;
+        block-size: calc(1.9rem - 2px);
+    }
 }

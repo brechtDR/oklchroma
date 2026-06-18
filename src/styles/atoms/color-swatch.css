@@ -1,64 +1,140 @@
-.preview-container {
-    margin-top: 2rem;
-    margin-bottom: .5rem;
+/* Color ramp hero — sticky under the nav, always visible while controls scroll */
+.color-ramp {
+    position: sticky;
+    top: 3.4rem;
+    container-type: scroll-state;
+    container-name: ramp;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-spacing-sm);
+    margin-block: var(--s-spacing-md) var(--s-spacing-lg);
+    padding: var(--s-spacing-md);
+    border: 1px solid var(--s-color-surface-glass-border);
+    border-radius: var(--s-radius-card-shape);
+    background: color-mix(in oklab, var(--s-surface-0), transparent 8%);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(12px);
+    transition:
+        padding 0.26s ease,
+        gap 0.26s ease,
+        border-radius 0.26s ease,
+        transform 0.26s ease;
+    will-change: transform;
+}
+
+.color-ramp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-spacing-md);
+    flex-wrap: wrap;
+    max-height: 6rem;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transform-origin: top center;
+    overflow: hidden;
+    transition:
+        opacity 0.2s ease,
+        transform 0.26s ease,
+        max-height 0.26s ease;
+}
+
+.color-ramp-identity {
+    display: flex;
+    align-items: center;
+    gap: var(--s-spacing-sm);
+    min-width: 0;
+}
+
+.color-ramp-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-spacing-sm);
+}
+
+.color-ramp-hint {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.preview-mode-button {
+    border: 1px solid var(--s-color-surface-glass-border);
+    border-radius: 999px;
+    background: var(--s-color-surface-glass);
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 0.28rem 0.78rem;
+    cursor: pointer;
+    transition:
+        background-color var(--transition-fast, 0.2s) ease,
+        color var(--transition-fast, 0.2s) ease;
+}
+
+.preview-mode-button.active {
+    background: var(--s-color-brand-primary);
+    color: var(--s-color-text-on-dark);
+    border-color: var(--s-color-brand-primary);
 }
 
 .color-swatches {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    gap: 0.5rem;
-    height: 4rem;
+    gap: 0;
+    min-height: 7rem;
+    border-radius: var(--s-radius-md);
+    overflow: hidden;
+    transition: min-height 0.26s ease;
 }
 
 .color-swatch {
-    border-radius: 0.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
-}
-
-.color-swatch:hover {
-    transform: scale(1.15) translateY(-5px);
-    box-shadow: var(--shadow-md);
-    z-index: 10;
-}
-
-/* Add these to your existing CSS file */
-.preview-help {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin-bottom: 0.5rem;
-}
-
-.color-swatch {
-    /* Convert from div to button */
     padding: 0;
-    border: 1px solid var(--border-color);
+    border: 0;
     background: none;
     cursor: pointer;
     position: relative;
-    border-radius: 0.5rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: var(--shadow-sm);
+    min-height: 7rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition:
+        min-height 0.26s ease,
+        transform var(--transition-fast, 0.2s) ease,
+        box-shadow var(--transition-fast, 0.2s) ease;
+}
+
+.color-swatch.is-marked::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0.45rem;
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: 1.1rem;
+    block-size: 0.18rem;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 0 0 1px rgb(0 0 0 / 0.25);
+    pointer-events: none;
 }
 
 .color-swatch:hover {
-    transform: scale(1.15) translateY(-5px);
-    box-shadow: var(--shadow-md);
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.35);
     z-index: 10;
 }
 
-.color-swatch:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-    box-shadow: var(--shadow-md);
+.color-swatch:focus-visible {
+    outline: 2px solid var(--s-color-text-on-dark);
+    outline-offset: -4px;
     z-index: 10;
 }
 
 .color-swatch.copied {
-    outline: 2px solid var(--success-color);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
+    outline: 2px solid var(--s-color-text-on-dark);
+    outline-offset: -4px;
+    z-index: 10;
 }
 
 .copied-indicator {
@@ -66,98 +142,131 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.5rem;
     color: white;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 0 3px rgb(0 0 0 / 0.7);
     pointer-events: none;
 }
 
+.copied-indicator .icon {
+    inline-size: 1.4rem;
+    block-size: 1.4rem;
+}
+
+.color-swatch-name {
+    display: block;
+    max-width: calc(100% - 0.5rem);
+    margin-bottom: 0.4rem;
+    padding: 0.15rem 0.35rem;
+    border-radius: 999px;
+    background: rgb(17 24 39 / 0.72);
+    color: #f9fafb;
+    font-size: 0.56rem;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+}
+
+.swatch-scale {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    color: var(--text-secondary);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    max-height: 2rem;
+    opacity: 1;
+    transform: translateY(0);
+    overflow: hidden;
+    transition:
+        opacity 0.2s ease,
+        transform 0.26s ease,
+        max-height 0.26s ease;
+}
+
+.swatch-scale > span {
+    text-align: center;
+}
+
+.swatch-scale > span.is-active {
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.swatch-scale > span.is-active::after {
+    content: "";
+    display: inline-block;
+    inline-size: 0.35rem;
+    block-size: 0.35rem;
+    margin-inline-start: 0.3rem;
+    border-radius: 999px;
+    background: var(--s-color-brand-primary);
+    vertical-align: middle;
+}
+
 .copy-message {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
+    min-height: 1.2rem;
+    font-size: 0.8rem;
     color: var(--success-color);
-    min-height: 1.5rem;
     font-weight: 500;
-    animation: fadeIn 0.3s ease-out;
+    max-height: 2rem;
+    opacity: 1;
+    transform: translateY(0);
+    overflow: hidden;
+    transition:
+        opacity 0.2s ease,
+        transform 0.26s ease,
+        max-height 0.26s ease;
 }
 
 .copy-message code {
-    background-color: var(--bg-primary);
+    background-color: var(--s-color-surface-glass);
     padding: 0.2rem 0.4rem;
-    border-radius: 0.25rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    border-radius: var(--s-radius-sm);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Updated color preview styles */
-.color-preview {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor: pointer;
-    position: relative;
-    padding: 0;
-    background-color: transparent; /* Reset button background */
+@container app (width < 640px) {
+    .color-swatches,
+    .color-swatch {
+        min-height: 5rem;
+    }
 }
 
-.color-preview:hover {
-    transform: scale(1.05);
-    box-shadow: var(--shadow-md);
+@container ramp scroll-state(stuck: top) {
+    .color-ramp {
+        padding: var(--s-spacing-xs) var(--s-spacing-sm);
+        gap: var(--s-spacing-xs);
+        transform: translateY(-0.1rem);
+    }
+
+    .color-ramp-header,
+    .swatch-scale,
+    .copy-message {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-0.35rem) scale(0.985);
+        pointer-events: none;
+    }
+
+    .color-swatches,
+    .color-swatch {
+        min-height: 3.5rem;
+    }
 }
 
-.color-preview:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-    transform: scale(1.05);
-}
+@media (width < 640px) {
+    @container ramp scroll-state(stuck: top) {
+        .color-ramp {
+            padding: 0.35rem 0.45rem;
+            border-radius: var(--s-radius-md);
+        }
 
-.color-preview.copied {
-    outline: 2px solid var(--success-color);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.3);
-}
-
-.color-preview-box {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    gap: 1rem;
-}
-
-.color-value-container {
-    flex: 1;
-    position: relative;
-}
-
-.small-copy-button {
-    padding: 0.4rem 0.75rem;
-    font-size: 0.75rem;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.small-copy-button:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-1px);
-}
-
-.small-copy-button:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-}
-
-/* Make sure the copy message in the color value container is positioned correctly */
-.color-value-container .copy-message {
-    position: absolute;
-    bottom: -1.25rem;
-    left: 0;
-    font-size: 0.75rem;
-    color: var(--success-color);
-    font-weight: 500;
+        .color-swatches,
+        .color-swatch {
+            min-height: 3rem;
+        }
+    }
 }

@@ -1,23 +1,63 @@
 .title {
-    font-family: var(--font-title);
-    text-align: center;
-    rotate: -5deg;
-    font-size: 3.8rem;
-    padding-top: 2rem;
-    text-transform: uppercase;
-
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: 0;
+    text-align: left;
 }
+
 .subtitle {
-    font-family: var(--font-title);
-    font-size: 1.7rem;
+    font-family: var(--font-heading);
+    font-size: clamp(1.3rem, 2.6vw, 1.7rem);
+    line-height: 1.2;
+    letter-spacing: 0;
+    color: var(--text-primary);
 }
 
 .variable-preview .subtitle {
     margin-bottom: 1rem;
 }
 
+h1,
+h2,
+h3,
+h4 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+}
+
+p,
+label,
+button,
+input,
+select,
+textarea {
+    font-family: var(--font-body);
+}
+
+.eyebrow-label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
 
 .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.visually-hidden-mobile {
     position: absolute;
     width: 1px;
     height: 1px;

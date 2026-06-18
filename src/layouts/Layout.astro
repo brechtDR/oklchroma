@@ -8,6 +8,7 @@ const {
 	title = "Oklchroma - OKLCH Color Pattern Generator",
 	description = "Create harmonious color patterns with Oklchroma, a powerful OKLCH-based color scale generator for designers and developers."
 } = Astro.props;
+const isDev = import.meta.env.DEV;
 ---
 
 <!doctype html>
@@ -23,7 +24,7 @@ const {
 	<meta name="generator" content={Astro.generator} />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Barriecito&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Young+Serif&display=swap" rel="stylesheet">
 
 	<title>{title}</title>
 	<meta name="description" content={description} />
@@ -45,9 +46,119 @@ const {
 	<!-- Webmention tags -->
 	<link rel="webmention" href="https://webmention.io/oklchroma.utilitybend.com/webmention" />
 	<link rel="pingback" href="https://webmention.io/oklchroma.utilitybend.com/xmlrpc" />
+	<script is:inline>
+		(() => {
+			const storageKey = "oklchroma-theme";
+			const value = localStorage.getItem(storageKey);
+			const preference = value === "dark" || value === "light" || value === "system" ? value : "system";
+			const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+			const resolvedTheme = preference === "system" ? (prefersDark ? "dark" : "light") : preference;
+
+			document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+			document.documentElement.style.colorScheme = resolvedTheme;
+			document.documentElement.dataset.themePreference = preference;
+		})();
+	</script>
+	{
+		isDev && (
+			<script type="module" is:inline>
+				import RefreshRuntime from "/@react-refresh";
+				RefreshRuntime.injectIntoGlobalHook(window);
+				window.$RefreshReg$ = () => {};
+				window.$RefreshSig$ = () => (type) => type;
+				window.__vite_plugin_react_preamble_installed__ = true;
+			</script>
+		)
+	}
+	{
+		isDev && (
+			<script is:inline>
+				const triggerClientLoadHydration = () => {
+					document.querySelectorAll('astro-island[client="load"][ssr]').forEach((island) => {
+						if (typeof island.start === "function") {
+							island.start();
+						}
+					});
+				};
+
+				if (document.readyState === "loading") {
+					document.addEventListener("DOMContentLoaded", () => setTimeout(triggerClientLoadHydration, 0), { once: true });
+				} else {
+					setTimeout(triggerClientLoadHydration, 0);
+				}
+			</script>
+		)
+	}
 </head>
 <body>
 	<slot />
+	<script is:inline>
+		(() => {
+			const storageKey = "oklchroma-theme";
+			const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+			const normalizePreference = (value) => {
+				if (value === "dark" || value === "light" || value === "system") {
+					return value;
+				}
+
+				return "system";
+			};
+
+			const getPreference = () => normalizePreference(localStorage.getItem(storageKey));
+			const resolveTheme = (preference) => (preference === "system" ? (mediaQuery.matches ? "dark" : "light") : preference);
+
+			const applyTheme = (preference) => {
+				const normalizedPreference = normalizePreference(preference);
+				const resolvedTheme = resolveTheme(normalizedPreference);
+				const root = document.documentElement;
+
+				root.classList.toggle("dark", resolvedTheme === "dark");
+				root.style.colorScheme = resolvedTheme;
+				root.dataset.themePreference = normalizedPreference;
+			};
+
+			const syncThemeControls = () => {
+				const preference = getPreference();
+				document.querySelectorAll("[data-theme-select]").forEach((control) => {
+					if (control instanceof HTMLSelectElement) {
+						control.value = preference;
+					}
+				});
+			};
+
+			const setThemePreference = (preference) => {
+				const normalizedPreference = normalizePreference(preference);
+				localStorage.setItem(storageKey, normalizedPreference);
+				applyTheme(normalizedPreference);
+				syncThemeControls();
+			};
+
+			document.querySelectorAll("[data-theme-select]").forEach((control) => {
+				if (!(control instanceof HTMLSelectElement)) {
+					return;
+				}
+
+				control.addEventListener("change", (event) => {
+					const target = event.target;
+					if (!(target instanceof HTMLSelectElement)) {
+						return;
+					}
+					setThemePreference(target.value);
+				});
+			});
+
+			mediaQuery.addEventListener("change", () => {
+				const preference = getPreference();
+				if (preference === "system") {
+					applyTheme(preference);
+					syncThemeControls();
+				}
+			});
+
+			syncThemeControls();
+		})();
+	</script>
 
 
 	<div class="container">
@@ -77,7 +188,7 @@ const {
 	}
 
 	.about-footer a {
-		color: var(--accent-color);
+		color: var(--s-color-brand-primary);
 		text-decoration: none;
 	}
 

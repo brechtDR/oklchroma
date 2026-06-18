@@ -1,10 +1,15 @@
+import ColorRamp from "@components/color-pattern-generator/components/color-ramp.tsx";
 import CSSOutput from "@components/color-pattern-generator/components/css-output.tsx";
 import PatternEditor from "@components/color-pattern-generator/components/pattern-editor.tsx";
 import PatternTab from "@components/color-pattern-generator/components/pattern-tab.tsx";
 import ShareLink from "@components/color-pattern-generator/components/share-link.tsx";
 import {
+    DEFAULT_MODIFIER_CURVE,
     getDefaultColorValues,
     formatColor,
+    getCurveMultiplier,
+    getPatternLightnessAnchor,
+    SHADE_STEPS,
     sanitizePatternName,
 } from "@components/color-pattern-generator/utils/color";
 import { encodePatterns, loadPatternsFromURL } from "@components/color-pattern-generator/utils/url";
@@ -18,7 +23,9 @@ export default function ColorPatternGenerator(): React.ReactElement {
             name: "primary",
             colorSpace: "oklch",
             colorValues: getDefaultColorValues("oklch"),
-            baseModifier: 0.05,
+            baseModifier: 0.015,
+            modifierCurve: DEFAULT_MODIFIER_CURVE,
+            hueShift: 20,
         },
     ]);
     const [activeTab, setActiveTab] = useState<number>(1);
@@ -35,7 +42,13 @@ export default function ColorPatternGenerator(): React.ReactElement {
         // Load patterns from URL
         const loadedPatterns = loadPatternsFromURL();
         if (loadedPatterns.length > 0) {
-            setPatterns(loadedPatterns);
+            setPatterns(
+                loadedPatterns.map((pattern) => ({
+                    ...pattern,
+                    modifierCurve: pattern.modifierCurve ?? DEFAULT_MODIFIER_CURVE,
+                    hueShift: pattern.hueShift ?? 0,
+                })),
+            );
         }
 
         // Generate initial CSS
@@ -89,7 +102,9 @@ export default function ColorPatternGenerator(): React.ReactElement {
                 name: `color${patterns.length + 1}`,
                 colorSpace: "oklch" as ColorSpace, // Add explicit type cast here
                 colorValues: getDefaultColorValues("oklch"),
-                baseModifier: 0.05,
+                baseModifier: 0.015,
+                modifierCurve: DEFAULT_MODIFIER_CURVE,
+                hueShift: 20,
             },
         ];
 
@@ -186,55 +201,90 @@ export default function ColorPatternGenerator(): React.ReactElement {
         const cssVars: Record<string, string> = {};
 
         patterns.forEach((pattern) => {
-            const { name, colorSpace, colorValues, baseModifier } = pattern;
+            const { name, colorSpace, colorValues, baseModifier, hueShift } = pattern;
             const color = formatColor(colorSpace, colorValues);
+            const lightnessAnchor = getPatternLightnessAnchor(pattern);
+            const lightnessAnchorPercent = (lightnessAnchor * 100).toFixed(2);
 
             css += `  --${name}: ${color};\n`;
             css += `  --${name}-base: ${baseModifier};\n`;
+            css += `  --${name}-hue-shift: ${hueShift};\n`;
+            css += `  --${name}-lightness-anchor: ${lightnessAnchorPercent}%;\n`;
 
             // Store the base variables
             cssVars[`--${name}`] = color;
             cssVars[`--${name}-base`] = baseModifier.toString();
+            cssVars[`--${name}-hue-shift`] = hueShift.toString();
+            cssVars[`--${name}-lightness-anchor`] = `${lightnessAnchorPercent}%`;
 
-            for (let i = 10; i <= 100; i += 10) {
-                // Calculate the sin multiplier with fixed precision to avoid floating point issues
-                const multiplier = ((11 - i / 10) * 0.1).toFixed(1);
+            SHADE_STEPS.forEach((i) => {
+                const curveMultiplier = getCurveMultiplier(i, pattern.modifierCurve).toFixed(3);
+                const hueOffset = (hueShift * (1 - i / 100)).toFixed(2);
+                const lightnessOffset = (((i - 50) / 50) * 100).toFixed(2);
 
                 // Define the variable for this shade
                 const variableName = `--${name}-${i}`;
-                const variableValue = `oklch(from var(--${name}) ${i}% calc(var(--${name}-base) + (sin(${multiplier} * pi) * c)) h)`;
+                const variableValue = `oklch(from var(--${name}) clamp(0%, calc(var(--${name}-lightness-anchor) + ${lightnessOffset}%), 100%) calc(var(--${name}-base) + (${curveMultiplier} * c)) calc(h + ${hueOffset}))`;
 
                 css += `  ${variableName}: ${variableValue};\n`;
 
                 // Store the variable for use in the swatches
                 cssVars[variableName] = variableValue;
-            }
+            });
 
             css += "\n";
         });
 
-        css += `}`;
+        css += "}\n";
         setOutputCSS(css);
         setCssVariables(cssVars);
-    };
-
-    const copyToClipboard = (): void => {
-        if (typeof navigator !== "undefined") {
-            navigator.clipboard
-                .writeText(outputCSS)
-                .then(() => {
-                    alert("CSS copied to clipboard!");
-                })
-                .catch((err) => {
-                    console.error("Failed to copy CSS", err);
-                });
-        }
     };
 
     const copyUrl = (): void => {
         // Make sure URL is updated before copying
         updateURLParam();
+    };
 
+    const addHarmonyPattern = (id: number, harmony: "complementary" | "analogous" | "split" | "triadic"): void => {
+        if (patterns.length >= 10) {
+            return;
+        }
+
+        const sourcePattern = patterns.find((pattern) => pattern.id === id);
+        if (!sourcePattern) {
+            return;
+        }
+
+        const hue = sourcePattern.colorValues.h;
+        if (hue === undefined) {
+            return;
+        }
+
+        const harmonyShift = {
+            complementary: 180,
+            analogous: 30,
+            split: 150,
+            triadic: 120,
+        }[harmony];
+
+        const newHue = ((hue + harmonyShift) % 360 + 360) % 360;
+        const newPatternId = Math.max(...patterns.map((pattern) => pattern.id), 0) + 1;
+        const safeName = sanitizePatternName(`${sourcePattern.name}-${harmony}`);
+        const uniqueName = patterns.some((pattern) => pattern.name === safeName) ? `${safeName}-${newPatternId}` : safeName;
+
+        const nextPattern: Pattern = {
+            ...sourcePattern,
+            id: newPatternId,
+            name: uniqueName,
+            colorValues: {
+                ...sourcePattern.colorValues,
+                h: newHue,
+            },
+        };
+
+        setPatterns((previous) => [...previous, nextPattern]);
+        setActiveTab(newPatternId);
+        debouncedUpdateURL();
     };
 
     // Function to get color for display based on the pattern's color space
@@ -253,8 +303,10 @@ export default function ColorPatternGenerator(): React.ReactElement {
         .map(([name, value]) => `${name}: ${value};`)
         .join("\n");
 
+    const activePattern = patterns.find((pattern) => pattern.id === activeTab) ?? patterns[0];
+
     return (
-        <div className="container">
+        <div className="container app-content">
             {/* Add a style element with our CSS variables */}
             <style dangerouslySetInnerHTML={{ __html: `:root {\n${styleBlock}\n}` }} />
 
@@ -266,6 +318,8 @@ export default function ColorPatternGenerator(): React.ReactElement {
                         pattern={pattern}
                         isActive={activeTab === pattern.id}
                         onClick={() => setActiveTab(pattern.id)}
+                        canRemove={patterns.length > 1}
+                        onRemove={() => removePattern(pattern.id)}
                         displayColor={getDisplayColor(pattern)}
                     />
                 ))}
@@ -291,28 +345,39 @@ export default function ColorPatternGenerator(): React.ReactElement {
                 )}
             </div>
 
-            {/* Active Pattern Editor */}
-            {patterns.map((pattern) => (
-                <PatternEditor
-                    key={pattern.id}
-                    pattern={pattern}
-                    isVisible={activeTab === pattern.id}
-                    onUpdatePattern={updatePattern}
-                    onUpdateColorValue={updateColorValue}
-                    onRemovePattern={removePattern}
-                    displayColor={getDisplayColor(pattern)}
+            {activePattern && (
+                <ColorRamp
+                    pattern={activePattern}
+                    displayColor={getDisplayColor(activePattern)}
                     getPreviewVarName={getPreviewVarName}
-                    nameError={nameError}
-                    patterns={patterns}
                     cssVariables={cssVariables}
                 />
-            ))}
+            )}
 
-            {/* CSS Output */}
-            <CSSOutput css={outputCSS} onCopy={copyToClipboard} />
+            <div className="generator-layout">
+                <div className="generator-controls">
+                    {/* Active Pattern Editor */}
+                    {patterns.map((pattern) => (
+                        <PatternEditor
+                            key={pattern.id}
+                            pattern={pattern}
+                            isVisible={activeTab === pattern.id}
+                            onUpdatePattern={updatePattern}
+                            onUpdateColorValue={updateColorValue}
+                            onRemovePattern={removePattern}
+                            displayColor={getDisplayColor(pattern)}
+                            nameError={nameError}
+                            patterns={patterns}
+                            onAddHarmonyPattern={addHarmonyPattern}
+                        />
+                    ))}
+                </div>
 
-            {/* Share Link */}
-            <ShareLink url={currentUrl} onCopy={copyUrl} />
+                <aside className="css-output-panel" id="share-link">
+                    <CSSOutput css={outputCSS} />
+                    <ShareLink url={currentUrl} onCopy={copyUrl} />
+                </aside>
+            </div>
         </div>
     );
 }

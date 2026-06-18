@@ -1,32 +1,62 @@
-/* CSS Output */
-.output-container {
-    margin-bottom: 2rem;
-    background-color: var(--bg-secondary);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
+/*
+ * CSS Output sidebar.
+ * Exception: this panel is intentionally dark in BOTH light and dark themes
+ * (a code surface), so it reads the cool primitive surfaces directly rather
+ * than the light-dark() semantic surface tokens.
+ */
+.css-output-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-spacing-md);
+    padding: var(--s-spacing-lg);
+    border: 1px solid var(--p-glass-light-border);
+    border-radius: var(--s-radius-card-shape);
+    background: var(--p-surface-cool-0);
     box-shadow: var(--shadow-sm);
+    color: var(--p-color-cool-text);
+}
+
+.css-output-panel .subtitle {
+    margin: 0;
+    color: var(--p-color-cool-darkest);
+}
+
+.output-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-spacing-sm);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 }
 
 .output-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    gap: var(--s-spacing-sm);
 }
 
 .css-output {
-    padding: 1.25rem;
-    background-color: var(--bg-tertiary);
-    border-radius: 0.5rem;
+    padding: var(--s-spacing-md);
+    background-color: var(--p-surface-cool-card-muted);
+    border-radius: var(--s-radius-md);
     overflow: auto;
-    font-size: 0.875rem;
-    height: 16rem;
+    font-size: 0.8rem;
+    height: 22rem;
     width: 100%;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     resize: vertical;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--p-glass-cool-border);
     white-space: pre;
-    color: var(--text-primary);
+    color: var(--p-color-cool-text);
     line-height: 1.6;
+}
+
+.css-output:focus-visible {
+    outline: 2px solid var(--s-color-brand-primary);
+    outline-offset: 2px;
+    border-color: var(--s-color-brand-primary);
 }

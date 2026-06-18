@@ -1,7 +1,7 @@
 import type { Pattern, ColorSpace } from "../types.ts";
 import { colorSpaceGroups } from "../utils/constants.ts";
 import ColorControls from "./color-controls.tsx";
-import ColorSwatches from "./color-swatches.tsx";
+import ModifierCurveEditor from "./modifier-curve-editor.tsx";
 
 interface PatternEditorProps {
     pattern: Pattern;
@@ -10,10 +10,9 @@ interface PatternEditorProps {
     onUpdateColorValue: (id: number, component: string, value: number) => void;
     onRemovePattern: (id: number) => void;
     displayColor: string;
-    getPreviewVarName: (pattern: Pattern, percentage: number) => string;
     nameError: string;
     patterns: Pattern[];
-    cssVariables?: Record<string, string>; // Add this prop
+    onAddHarmonyPattern: (id: number, harmony: "complementary" | "analogous" | "split" | "triadic") => void;
 }
 
 export default function PatternEditor({
@@ -23,11 +22,23 @@ export default function PatternEditor({
     onUpdateColorValue,
     onRemovePattern,
     displayColor,
-    getPreviewVarName,
     nameError,
     patterns,
-    cssVariables = {}, // Default to empty object
+    onAddHarmonyPattern,
 }: PatternEditorProps) {
+    const supportsHueControls = ["oklch", "lch", "hsl", "hwb"].includes(pattern.colorSpace);
+    const sourceHue = pattern.colorValues.h ?? 0;
+    const harmonyOptions: Array<{
+        id: "complementary" | "analogous" | "split" | "triadic";
+        label: string;
+        shift: number;
+    }> = [
+        { id: "complementary", label: "Complement", shift: 180 },
+        { id: "triadic", label: "Triad", shift: 120 },
+        { id: "split", label: "Split", shift: 150 },
+        { id: "analogous", label: "Analogous", shift: 30 },
+    ];
+
     return (
         <div className={`pattern-editor ${isVisible ? "visible" : "hidden"}`}>
             <button
@@ -51,77 +62,122 @@ export default function PatternEditor({
                 </svg>
                 Remove<span className="visually-hidden-mobile"> pattern</span>
             </button>
-            <div className="pattern-header">
-                <div className="pattern-name-container">
-                    <label className="input-label">Pattern Name</label>
+
+            {/* Source Color */}
+            <div className="editor-card">
+                <h2 className="subtitle">Source Color</h2>
+                <p className="input-help">Anchor color for the scale.</p>
+
+                <div className="pattern-form-row">
+                    <div className="color-space-selector">
+                        <label className="field" htmlFor={`space-${pattern.id}`}>
+                            <span className="field-prefix">Space</span>
+                            <select
+                                id={`space-${pattern.id}`}
+                                value={pattern.colorSpace}
+                                onChange={(e) => onUpdatePattern(pattern.id, "colorSpace", e.target.value as ColorSpace)}
+                                className="field-control color-space-select"
+                            >
+                                {Object.entries(colorSpaceGroups).map(([group, spaces]) => (
+                                    <optgroup key={group} label={group}>
+                                        {spaces.map((space) => (
+                                            <option key={space} value={space}>
+                                                {space}
+                                            </option>
+                                        ))}
+                                    </optgroup>
+                                ))}
+                            </select>
+                        </label>
+                    </div>
+
+                    <div className="pattern-name-container">
+                        <label className={`field ${nameError ? "field--error" : ""}`} htmlFor={`name-${pattern.id}`}>
+                            <span className="field-prefix">Name</span>
+                            <input
+                                id={`name-${pattern.id}`}
+                                type="text"
+                                value={pattern.name}
+                                onChange={(e) => onUpdatePattern(pattern.id, "name", e.target.value)}
+                                className="field-control text-input"
+                                placeholder="primary"
+                            />
+                        </label>
+                        {nameError && <div className="error-message">{nameError}</div>}
+                    </div>
+                </div>
+
+                <ColorControls pattern={pattern} onColorValueChange={onUpdateColorValue} />
+
+                <div className="hue-shift-control">
+                    <p className="eyebrow-label">Scale Behaviour</p>
+                    <div className="control-row">
+                        <label className="input-label">
+                            Hue Shift <span className="input-label-note">across scale</span>
+                        </label>
+                        <span className="control-value is-accent">
+                            {pattern.hueShift > 0 ? "+" : ""}
+                            {pattern.hueShift.toFixed(0)}&deg;
+                        </span>
+                    </div>
                     <input
-                        type="text"
-                        value={pattern.name}
-                        onChange={(e) => onUpdatePattern(pattern.id, "name", e.target.value)}
-                        className={`text-input ${nameError ? "error-input" : ""}`}
-                        placeholder="Enter a name (letters, numbers, hyphens, underscores)"
+                        type="range"
+                        min="-90"
+                        max="90"
+                        step="1"
+                        value={pattern.hueShift}
+                        onChange={(e) => onUpdatePattern(pattern.id, "hueShift", parseFloat(e.target.value))}
+                        className="range-input"
+                        disabled={!supportsHueControls}
                     />
-                    {nameError && <div className="error-message">{nameError}</div>}
-                    <div className="input-help">Only letters, numbers, hyphens (-) and underscores (_) are allowed</div>
+                    <p className="input-help">
+                        Rotates hue from lightest to darkest stop. 0&deg; = monochromatic.
+                    </p>
+                    {!supportsHueControls && (
+                        <p className="input-help">Unavailable in this color space. Try OKLCH, LCH, HSL, or HWB.</p>
+                    )}
                 </div>
             </div>
 
-            {/* Color Space Selector */}
-            <div className="color-space-selector">
-                <label className="input-label">Color Space</label>
-                <select
-                    value={pattern.colorSpace}
-                    onChange={(e) => onUpdatePattern(pattern.id, "colorSpace", e.target.value as ColorSpace)}
-                    className="color-space-select"
-                >
-                    {Object.entries(colorSpaceGroups).map(([group, spaces]) => (
-                        <optgroup key={group} label={group}>
-                            {spaces.map((space) => (
-                                <option key={space} value={space}>
-                                    {space}
-                                </option>
-                            ))}
-                        </optgroup>
-                    ))}
-                </select>
-            </div>
+            {/* Scale Modifier */}
+            <ModifierCurveEditor
+                baseModifier={pattern.baseModifier}
+                curve={pattern.modifierCurve}
+                displayColor={displayColor}
+                onBaseModifierChange={(value) => onUpdatePattern(pattern.id, "baseModifier", value)}
+                onCurveChange={(curve) => onUpdatePattern(pattern.id, "modifierCurve", curve)}
+            />
 
-            {/* Color Controls */}
-            <ColorControls pattern={pattern} onColorValueChange={onUpdateColorValue} displayColor={displayColor} />
-
-            {/* Base Modifier */}
-            <div className="base-modifier">
-                <label className="input-label">Base Modifier: {pattern.baseModifier}</label>
-                <input
-                    type="range"
-                    min="0"
-                    max="1.0"
-                    step="0.01"
-                    value={pattern.baseModifier}
-                    onChange={(e) => onUpdatePattern(pattern.id, "baseModifier", parseFloat(e.target.value))}
-                    className="range-input"
-                />
-            </div>
-
-            {/* Color Swatch Preview */}
-            <ColorSwatches pattern={pattern} getPreviewVarName={getPreviewVarName} cssVariables={cssVariables} />
-
-            {/* Pattern Variable Preview */}
-            <div className="variable-preview">
-                <h2 className="subtitle">CSS Variable Names</h2>
-                <p className="variable-list">
-                    Base: <code>--{pattern.name}</code>, <code>--{pattern.name}-base</code>
-                    <br />
-                    Scale:{" "}
-                    {[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((i) => (
-                        <span key={i}>
-                            <code>
-                                --{pattern.name}-{i}
-                            </code>
-                            {i < 100 ? ", " : ""}
-                        </span>
-                    ))}
-                </p>
+            {/* Harmony */}
+            <div className="editor-card harmony-tools">
+                <h2 className="subtitle">Harmony</h2>
+                <p className="input-help">Add related patterns in one click.</p>
+                {supportsHueControls ? (
+                    <div className="harmony-buttons">
+                        {harmonyOptions.map((option) => {
+                            const targetHue = (((sourceHue + option.shift) % 360) + 360) % 360;
+                            return (
+                                <button
+                                    key={option.id}
+                                    type="button"
+                                    className="harmony-button"
+                                    onClick={() => onAddHarmonyPattern(pattern.id, option.id)}
+                                    disabled={patterns.length >= 10}
+                                    title={`${option.label} -> hue ${targetHue.toFixed(0)}deg`}
+                                >
+                                    <span
+                                        className="harmony-preview-dot"
+                                        style={{ backgroundColor: `oklch(65% 0.13 ${targetHue})` }}
+                                        aria-hidden="true"
+                                    />
+                                    <span>{option.label}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <p className="input-help">Harmony quick add is available in hue-based spaces like OKLCH, LCH, HSL, and HWB.</p>
+                )}
             </div>
         </div>
     );

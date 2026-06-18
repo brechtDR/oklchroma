@@ -1,14 +1,11 @@
-@media (max-width: 640px) {
+.app-layout {
+    container-type: inline-size;
+    container-name: viewport;
+}
+
+@container viewport (width < 640px) {
     .container {
         padding: 1rem;
-    }
-
-    .pattern-header {
-        flex-direction: column;
-    }
-
-    .color-value-container {
-        width: 100%;
     }
 
     .color-preview-box {
@@ -26,28 +23,4 @@
     .color-value {
         width: 100%;
     }
-
-    .color-swatches {
-        grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-    }
-    .visually-hidden-mobile {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border-width: 0;
-    }
-}
-
-
-@media (width < 400px) {
-    nav {
-        flex-direction: column;
-    }
-
 }

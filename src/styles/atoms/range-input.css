@@ -1,46 +1,56 @@
 .range-input {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 10px;
-    background: var(--bg-primary);
-    border-radius: 5px;
-    border: 1px solid var(--slider-border);
-    outline: none;
-    transition: background 0.2s;
-    box-shadow: var(--shadow-sm) inset;
+	-webkit-appearance: none;
+	appearance: none;
+	width: 100%;
+	height: 2rem;
+	border: 1px solid color-mix(in oklab, var(--slider-border), transparent 4%);
+	border-radius: 999px;
+	outline: none;
+	background: var(--s-surface-1);
+	transition:
+		border-color var(--transition-fast, 0.2s) ease,
+		box-shadow var(--transition-fast, 0.2s) ease;
+}
+
+.range-input:focus-visible {
+	border-color: color-mix(in oklab, var(--s-color-brand-primary), white 12%);
+	box-shadow: 0 0 0 3px color-mix(in oklab, var(--s-color-brand-primary), transparent 78%);
 }
 
 .range-input::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--accent-color);
-    cursor: pointer;
-    border: 2px solid var(--slider-thumb-border);
-    box-shadow: var(--slider-thumb-shadow);
-    transition: transform 0.1s;
+	-webkit-appearance: none;
+	appearance: none;
+	width: 1.35rem;
+	height: 1.35rem;
+	border: 1px solid rgb(0 0 0 / 0.12);
+	border-radius: 50%;
+	background: #ffffff;
+	box-shadow:
+		0 1px 5px rgb(0 0 0 / 0.34),
+		0 0 0 1px rgb(255 255 255 / 0.08);
+	cursor: pointer;
+	transition: transform var(--transition-fast, 0.2s) ease;
 }
 
 .range-input::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--accent-color);
-    cursor: pointer;
-    border: 2px solid var(--slider-thumb-border);
-    box-shadow: var(--slider-thumb-shadow);
-    transition: transform 0.1s;
+	width: 1.35rem;
+	height: 1.35rem;
+	border: 1px solid rgb(0 0 0 / 0.12);
+	border-radius: 50%;
+	background: #ffffff;
+	box-shadow:
+		0 1px 5px rgb(0 0 0 / 0.34),
+		0 0 0 1px rgb(255 255 255 / 0.08);
+	cursor: pointer;
+	transition: transform var(--transition-fast, 0.2s) ease;
 }
 
 .range-input::-webkit-slider-thumb:hover,
 .range-input::-webkit-slider-thumb:active {
-    transform: scale(1.2);
+	transform: scale(1.12);
 }
 
 .range-input::-moz-range-thumb:hover,
 .range-input::-moz-range-thumb:active {
-    transform: scale(1.2);
+	transform: scale(1.12);
 }

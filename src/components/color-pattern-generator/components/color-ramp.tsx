@@ -1,33 +1,46 @@
-import { useState } from "react";
+import { formatHex } from "culori";
+import { identify } from "chromonym";
+import { useMemo, useState } from "react";
 import type { Pattern } from "../types.ts";
+import { computeScaleOklch } from "../utils/color.ts";
 
-interface ColorSwatchesProps {
+interface ColorRampProps {
     pattern: Pattern;
+    displayColor: string;
     getPreviewVarName: (pattern: Pattern, percentage: number) => string;
-    cssVariables?: Record<string, string>; // Make it optional
+    cssVariables?: Record<string, string>;
 }
 
-export default function ColorSwatches({ pattern, getPreviewVarName, cssVariables = {} }: ColorSwatchesProps) {
+const SHADE_STEPS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const ACTIVE_STEP = 50;
+
+export default function ColorRamp({ pattern, displayColor, getPreviewVarName, cssVariables = {} }: ColorRampProps) {
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+    const [showNames, setShowNames] = useState(false);
 
-    // Function to copy color value to clipboard
+    const swatchNames = useMemo(() => {
+        const names: Record<number, string | null> = {};
+        SHADE_STEPS.forEach((percentage) => {
+            const oklch = computeScaleOklch(pattern, percentage);
+            if (!oklch) {
+                names[percentage] = null;
+                return;
+            }
+            const hex = formatHex(oklch);
+            names[percentage] = identify(hex);
+        });
+        return names;
+    }, [pattern]);
+
     const copyToClipboard = (percentage: number) => {
-        // Get the actual CSS variable name
         const varName = `--${pattern.name}-${percentage}`;
-
-        // Get the value from cssVariables or use the variable name as fallback
         const colorValue = cssVariables[varName] || varName;
 
         navigator.clipboard
             .writeText(colorValue)
             .then(() => {
-                // Set this index as copied for feedback
                 setCopiedIndex(percentage);
-
-                // Reset the copied status after 2 seconds, maybe i should create a separate function for this
-                setTimeout(() => {
-                    setCopiedIndex(null);
-                }, 2000);
+                setTimeout(() => setCopiedIndex(null), 2000);
             })
             .catch((err) => {
                 console.error("Failed to copy color to clipboard:", err);
@@ -35,24 +48,41 @@ export default function ColorSwatches({ pattern, getPreviewVarName, cssVariables
     };
 
     return (
-        <div className="preview-container">
-            <h2 className="subtitle">Preview</h2>
-            <p className="preview-help">Click on a color to copy its CSS value to clipboard</p>
+        <section className="color-ramp" aria-label={`Color ramp for ${pattern.name}`}>
+            <div className="color-ramp-header">
+                <div className="color-ramp-identity">
+                    <span className="pattern-color-chip" style={{ backgroundColor: displayColor }} aria-hidden="true" />
+                    <div className="pattern-meta">
+                        <h2 className="subtitle">{pattern.name}</h2>
+                        <p className="pattern-value">{displayColor}</p>
+                    </div>
+                </div>
+                <div className="color-ramp-actions">
+                    <button
+                        type="button"
+                        className={`preview-mode-button ${showNames ? "active" : ""}`}
+                        onClick={() => setShowNames((value) => !value)}
+                        aria-pressed={showNames}
+                    >
+                        Names
+                    </button>
+                    <span className="color-ramp-hint">click any to copy</span>
+                </div>
+            </div>
+
             <div className="color-swatches" role="grid" aria-label="Color shades for pattern">
-                {[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].map((i) => {
+                {SHADE_STEPS.map((i) => {
                     const varName = `--${pattern.name}-${i}`;
                     const isCopied = copiedIndex === i;
 
                     return (
                         <button
                             key={i}
-                            className={`color-swatch ${isCopied ? "copied" : ""}`}
+                            className={`color-swatch ${isCopied ? "copied" : ""} ${i === ACTIVE_STEP ? "is-marked" : ""}`}
                             title={`Click to copy ${varName}`}
                             aria-label={`Copy color ${varName} to clipboard, shade ${i}`}
                             onClick={() => copyToClipboard(i)}
-                            style={{
-                                backgroundColor: getPreviewVarName(pattern, i),
-                            }}
+                            style={{ backgroundColor: getPreviewVarName(pattern, i) }}
                         >
                             {isCopied && (
                                 <span className="copied-indicator" aria-hidden="true">
@@ -72,11 +102,21 @@ export default function ColorSwatches({ pattern, getPreviewVarName, cssVariables
                                     </svg>
                                 </span>
                             )}
+                            {showNames && swatchNames[i] && <span className="color-swatch-name">{swatchNames[i]}</span>}
                             <span className="visually-hidden">{isCopied ? "Copied!" : `${i}% shade`}</span>
                         </button>
                     );
                 })}
             </div>
+
+            <div className="swatch-scale" aria-hidden="true">
+                {SHADE_STEPS.map((step) => (
+                    <span key={step} className={step === ACTIVE_STEP ? "is-active" : ""}>
+                        {step}
+                    </span>
+                ))}
+            </div>
+
             <div className="copy-message" role="status" aria-live="polite">
                 {copiedIndex !== null && (
                     <>
@@ -88,6 +128,6 @@ export default function ColorSwatches({ pattern, getPreviewVarName, cssVariables
                     </>
                 )}
             </div>
-        </div>
+        </section>
     );
 }

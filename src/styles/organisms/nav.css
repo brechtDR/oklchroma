@@ -1,65 +1,146 @@
-nav {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 1.5rem;
-    background-color: var(--bg-secondary);
+.top-nav {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 80;
+    background: color-mix(in oklab, var(--s-surface-0), transparent 12%);
+    border-bottom: 1px solid var(--s-color-surface-glass-border);
     box-shadow: var(--shadow-sm);
-    padding: 1rem 2rem;
-    top: 0;
-    z-index: 100;
+    backdrop-filter: blur(10px);
 }
 
-nav ul {
+.top-nav-inner {
+    max-width: 1200px;
+    margin-inline: auto;
     display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    justify-content: end;
-    gap: 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 2rem;
+    container-type: inline-size;
+    container-name: topnav;
 }
 
-nav li {
-    margin: 0;
+.top-nav::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    block-size: 3px;
+    background: linear-gradient(90deg, var(--p-color-primary-500-vivid), var(--p-color-primary-dark-vivid));
 }
 
-nav a {
-    color: var(--text-primary);
+.top-nav-left,
+.top-nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.site-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     text-decoration: none;
+}
+
+.site-logo {
+    font-family: var(--font-heading);
+    font-size: 1.65rem;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+.site-divider {
+    inline-size: 1px;
+    block-size: 1.4rem;
+    background: var(--s-color-surface-glass-border);
+}
+
+.site-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.top-nav-right a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.93rem;
     font-weight: 500;
-    padding: 0.5rem 1rem .2rem;
-    transition: all 0.2s ease;
-    border-bottom: 3px solid transparent
+    transition: color 0.2s ease;
 }
 
-nav a:hover {
-    color: var(--accent-color);
+.top-nav-right a:hover {
+    color: var(--text-primary);
 }
 
-nav a.active {
-    border-color: var(--accent-color);
+.top-nav-right a.active {
+    color: var(--s-color-brand-primary);
 }
 
-nav a.active:hover {
-    color: white;
+.theme-setting {
+    display: inline-flex;
+    align-items: center;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    nav {
-        padding: 0.75rem 1rem;
+.theme-select {
+    min-inline-size: 6.8rem;
+    block-size: 2rem;
+    border-radius: 999px;
+    border: 1px solid var(--s-color-surface-glass-border);
+    background: var(--s-color-surface-glass);
+    color: var(--text-secondary);
+    padding-inline: 0.65rem 1.55rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition:
+        border-color var(--transition-fast, 0.2s) ease,
+        color var(--transition-fast, 0.2s) ease,
+        background-color var(--transition-fast, 0.2s) ease;
+}
+
+.theme-select:hover {
+    color: var(--text-primary);
+    border-color: color-mix(in oklab, var(--s-color-brand-primary), transparent 45%);
+    background: color-mix(in oklab, var(--s-color-brand-primary), transparent 88%);
+}
+
+.theme-select:focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--s-color-brand-primary), white 12%);
+    outline-offset: 2px;
+}
+
+.share-cta {
+    padding: 0.42rem 0.9rem;
+    border-radius: 999px;
+    background: var(--s-color-brand-primary);
+    color: var(--s-color-text-on-dark) !important;
+    border: 1px solid color-mix(in oklab, var(--s-color-brand-primary), white 15%);
+}
+
+.share-cta:hover {
+    background: var(--s-color-brand-primary-light);
+}
+
+@container topnav (width < 700px) {
+    .top-nav-inner {
+        padding: 0.7rem 1rem;
     }
 
-    nav ul {
-        gap: 1rem;
+    .site-divider,
+    .site-subtitle {
+        display: none;
     }
 
-    .container {
-        padding: 0 1rem;
+    .top-nav-right {
+        gap: 0.45rem;
     }
 
-    .title {
-        font-size: 2.25rem;
-        margin: 1.5rem 0;
+    .theme-select {
+        min-inline-size: 5.9rem;
     }
 }

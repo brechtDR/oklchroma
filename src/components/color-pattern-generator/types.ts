@@ -41,4 +41,6 @@ export interface Pattern {
     colorSpace: ColorSpace;
     colorValues: Record<string, number>;
     baseModifier: number;
+    modifierCurve: [number, number, number, number];
+    hueShift: number;
 }

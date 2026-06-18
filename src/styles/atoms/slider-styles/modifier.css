@@ -1,8 +1,80 @@
-/* Base Modifier */
-.base-modifier {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background-color: var(--bg-tertiary);
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
+/* Scale Modifier — segmented preset control */
+.segmented {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: 999px;
+    background: var(--s-color-surface-glass);
+    border: 1px solid var(--s-color-surface-glass-border);
+}
+
+.segmented-button {
+    border: 0;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.34rem 0.7rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition:
+        background-color var(--transition-fast, 0.2s) ease,
+        color var(--transition-fast, 0.2s) ease;
+}
+
+.segmented-button:hover:not(.is-active):not(.is-readonly) {
+    color: var(--text-primary);
+}
+
+.segmented-button.is-active {
+    background: var(--s-color-brand-primary);
+    color: var(--s-color-text-on-dark);
+}
+
+.segmented-button.is-readonly {
+    cursor: default;
+}
+
+/* Chroma curve canvas */
+.curve-canvas {
+    width: 100%;
+    border: 1px solid var(--s-surface-border);
+    border-radius: var(--s-radius-md);
+    background: var(--s-surface-0);
+    cursor: crosshair;
+}
+
+.curve-canvas.is-dragging {
+    cursor: grabbing;
+}
+
+.curve-axis {
+    stroke: var(--s-surface-border);
+    stroke-width: 1;
+}
+
+.curve-path {
+    fill: none;
+    stroke: var(--curve-color, var(--s-color-brand-primary));
+    stroke-width: 2;
+}
+
+.curve-guide-dot {
+    fill: var(--s-color-text);
+    opacity: 0.45;
+}
+
+.curve-handle-line {
+    stroke: color-mix(in oklab, var(--curve-color, var(--s-color-brand-primary)), transparent 45%);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+}
+
+.curve-handle {
+    fill: var(--curve-color, var(--s-color-brand-primary));
+    stroke: var(--s-surface-0);
+    stroke-width: 1.5;
+    cursor: grab;
 }

@@ -1,97 +1,55 @@
-/* Share Link */
+/* Share palette link — bottom of the CSS Output sidebar */
 .share-container {
-    margin-bottom: 2rem;
-    background-color: var(--bg-secondary);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
-}
-
-.share-input-container {
     display: flex;
-    margin-bottom: 0.75rem;
+    flex-direction: column;
+    gap: var(--s-spacing-xs);
+    margin: 0;
+    padding-block-start: var(--s-spacing-md);
+    border-block-start: 1px solid var(--p-glass-cool-border);
 }
 
-.share-input {
-    flex: 1;
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
-    border-right: none;
-    border-radius: 0.5rem 0 0 0.5rem;
-    background-color: var(--input-bg);
-    color: var(--text-primary);
-    font-size: 0.875rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-    min-width: 0;
-}
-
-/* Enhanced ShareLink component styles */
 .share-button {
-    padding: 0.75rem 1.25rem;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 0 0.5rem 0.5rem 0;
+    width: 100%;
+    padding: 0.7rem 1rem;
+    background-color: var(--s-color-brand-primary);
+    color: var(--s-color-text-on-dark);
+    border: 1px solid color-mix(in oklab, var(--s-color-brand-primary), white 15%);
+    border-radius: 999px;
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s ease;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition:
+        background-color var(--transition-fast, 0.2s) ease,
+        box-shadow var(--transition-fast, 0.2s) ease;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    min-width: 120px;
+    gap: var(--s-spacing-xs);
     justify-content: center;
 }
 
 .share-button:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--s-color-brand-primary-light);
     box-shadow: var(--shadow-md);
 }
 
-.share-button:focus {
-    outline: 2px solid var(--accent-hover);
+.share-button:focus-visible {
+    outline: 2px solid var(--s-color-brand-primary);
     outline-offset: 2px;
 }
 
 .share-button.copied {
-    background-color: var(--success-color);
+    background-color: var(--s-color-alert-success-text);
+    border-color: var(--s-color-alert-success-text);
 }
 
 .copy-icon {
-    font-size: 1.2em;
+    font-size: 1em;
     line-height: 1;
 }
 
-.copy-success-message {
-    margin-top: 0.5rem;
-    color: var(--success-color);
-    font-size: 0.875rem;
-    font-weight: 500;
-    animation: fadeIn 0.3s ease-out;
-}
-
-.share-input:focus {
-    outline: none;
-    border-color: var(--success-color);
-    box-shadow: 0 0 0 1px var(--success-color);
-}
-
-.share-container {
-    position: relative;
-    margin-bottom: 2rem;
-    background-color: var(--bg-secondary);
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
-}
-
-.share-container .subtitle {
-    margin-bottom: 1rem;
-}
-
 .share-description {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--p-color-gray-cool-700);
     line-height: 1.5;
 }

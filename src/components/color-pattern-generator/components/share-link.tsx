@@ -9,19 +9,14 @@ export default function ShareLink({ url, onCopy }: ShareLinkProps) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = () => {
-        // Copy to clipboard
+        // Ensure the URL reflects the latest patterns before copying.
+        onCopy();
+
         navigator.clipboard
-            .writeText(url)
+            .writeText(url || window.location.href)
             .then(() => {
                 setCopied(true);
-
-                // Call the parent's onCopy callback
-                onCopy();
-
-                // Reset after 3 seconds
-                setTimeout(() => {
-                    setCopied(false);
-                }, 3000);
+                setTimeout(() => setCopied(false), 3000);
             })
             .catch((error) => {
                 console.error("Failed to copy URL to clipboard:", error);
@@ -30,44 +25,18 @@ export default function ShareLink({ url, onCopy }: ShareLinkProps) {
 
     return (
         <div className="share-container">
-            <h2 className="subtitle">Share Link</h2>
-            <div className="share-input-container">
-                <input
-                    type="text"
-                    readOnly
-                    value={url}
-                    className="share-input"
-                    onClick={(e) => (e.target as HTMLInputElement).select()}
-                    aria-label="Shareable URL for your color patterns"
-                />
-                <button
-                    className={`share-button ${copied ? "copied" : ""}`}
-                    onClick={handleCopy}
-                    aria-label="Copy URL to clipboard"
-                >
-                    {copied ? (
-                        <>
-                            <span className="copy-icon" aria-hidden="true">
-                                ✓
-                            </span>
-                            <span>Copied!</span>
-                        </>
-                    ) : (
-                        <>
-                            <span className="copy-icon" aria-hidden="true"></span>
-                            <span>Copy URL</span>
-                        </>
-                    )}
-                </button>
-            </div>
-            {copied && (
-                <div className="copy-success-message" role="status" aria-live="polite">
-                    URL copied to clipboard successfully!
-                </div>
-            )}
-            <p className="share-description">
-                This URL contains all your pattern configurations. Share it to let others see your color patterns.
-            </p>
+            <button
+                type="button"
+                className={`share-button ${copied ? "copied" : ""}`}
+                onClick={handleCopy}
+                aria-label="Copy shareable palette link to clipboard"
+            >
+                <span className="copy-icon" aria-hidden="true">
+                    {copied ? "✓" : "🔗"}
+                </span>
+                <span>{copied ? "Link copied!" : "Share palette link"}</span>
+            </button>
+            <p className="share-description">URL encodes all patterns — share to restore.</p>
         </div>
     );
 }

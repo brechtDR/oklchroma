@@ -1,5 +1,5 @@
 import type { Pattern, ColorSpace } from "../types.ts";
-import { getDefaultColorValues, handleColorSpaceChange } from "./color.ts";
+import { DEFAULT_MODIFIER_CURVE, getDefaultColorValues, handleColorSpaceChange } from "./color.ts";
 import { colorSpaceToCode, codeToColorSpace, colorSpaceComponents } from "./constants.ts";
 
 // Helper function to encode patterns to a compact URL format
@@ -25,8 +25,11 @@ export function encodePatterns(patterns: Pattern[]): string {
         // Encode base modifier (rounded to 2 decimal places)
         const base = pattern.baseModifier.toFixed(2).replace(/\.?0+$/, "");
 
+        const curve = pattern.modifierCurve.map((point) => point.toFixed(3).replace(/\.?0+$/, "")).join(",");
+        const hueShift = pattern.hueShift.toFixed(1).replace(/\.?0+$/, "");
+
         // Combine all parts with a separator
-        parts.push(`${name}:${spaceCode}:${values}:${base}`);
+        parts.push(`${name}:${spaceCode}:${values}:${base}:${curve}:${hueShift}`);
     });
 
     return parts.join("|");
@@ -41,7 +44,7 @@ export function decodePatterns(encoded: string): Pattern[] {
 
     parts.forEach((part, index) => {
         try {
-            const [name, spaceCode, valuesStr, baseStr] = part.split(":");
+            const [name, spaceCode, valuesStr, baseStr, curveStr, hueShiftStr] = part.split(":");
 
             // Get color space from code
             const colorSpace = codeToColorSpace[spaceCode] || "oklch";
@@ -64,6 +67,10 @@ export function decodePatterns(encoded: string): Pattern[] {
 
             // Parse base modifier
             const baseModifier = parseFloat(baseStr) || 0.05;
+            const modifierCurve = curveStr
+                ? (curveStr.split(",").map((value) => parseFloat(value)) as [number, number, number, number])
+                : DEFAULT_MODIFIER_CURVE;
+            const hueShift = hueShiftStr ? parseFloat(hueShiftStr) : 0;
 
             // Add pattern
             patterns.push({
@@ -72,6 +79,11 @@ export function decodePatterns(encoded: string): Pattern[] {
                 colorSpace,
                 colorValues,
                 baseModifier,
+                modifierCurve:
+                    modifierCurve.length === 4 && modifierCurve.every((value) => !Number.isNaN(value))
+                        ? modifierCurve
+                        : DEFAULT_MODIFIER_CURVE,
+                hueShift: Number.isNaN(hueShift) ? 0 : hueShift,
             });
         } catch (e) {
             console.error("Failed to parse pattern:", part, e);
@@ -86,6 +98,8 @@ export function decodePatterns(encoded: string): Pattern[] {
             colorSpace: "oklch",
             colorValues: getDefaultColorValues("oklch"),
             baseModifier: 0.05,
+            modifierCurve: DEFAULT_MODIFIER_CURVE,
+            hueShift: 0,
         });
     }
 
@@ -121,6 +135,9 @@ export function loadPatternsFromURL(): Pattern[] {
                         ...p,
                         colorSpace: "oklch" as ColorSpace,
                         colorValues: getDefaultColorValues("oklch"),
+                        baseModifier: p.baseModifier ?? 0.05,
+                        modifierCurve: p.modifierCurve ?? DEFAULT_MODIFIER_CURVE,
+                        hueShift: p.hueShift ?? 0,
                     };
                 }
 
@@ -149,6 +166,9 @@ export function loadPatternsFromURL(): Pattern[] {
                     ...p,
                     colorSpace: safeColorSpace,
                     colorValues: updatedValues,
+                    baseModifier: p.baseModifier ?? 0.05,
+                    modifierCurve: p.modifierCurve ?? DEFAULT_MODIFIER_CURVE,
+                    hueShift: p.hueShift ?? 0,
                 };
             });
         } catch (e) {
@@ -168,6 +188,8 @@ function getDefaultPatterns(): Pattern[] {
             colorSpace: "oklch",
             colorValues: getDefaultColorValues("oklch"),
             baseModifier: 0.05,
+            modifierCurve: DEFAULT_MODIFIER_CURVE,
+            hueShift: 0,
         },
     ];
 }

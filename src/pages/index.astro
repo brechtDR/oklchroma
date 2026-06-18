@@ -1,26 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ColorPatternGenerator from '../components/color-pattern-generator/color-pattern-generator';
-import Webmentions from '../components/webmentions/webmentions.astro';
 import '../styles/main.css';
 ---
 
 <Layout title="Oklchroma - OKLCH Color Pattern Generator">
-	<nav>
-		<ul>
-			<li><a href="/" class="active">Editor</a></li>
-			<li><a href="/about">About</a></li>
-		</ul>
-		<div class="buy-coffee">
-			<script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Buy me a coffee', 'var(--color-primary-500)', 'H2H2ZNUST');kofiwidget2.draw();</script>
+	<nav class="top-nav">
+		<div class="top-nav-inner">
+			<div class="top-nav-left">
+				<a href="/" class="site-logo-wrap" aria-label="Oklchroma home">
+					<span class="site-logo">Oklchroma</span>
+					<span class="site-divider" aria-hidden="true"></span>
+					<span class="site-subtitle">OKLCH Pattern Generator</span>
+				</a>
 			</div>
-	</nav>
-	<main>
-		<div class="container">
-			<h1 class="title">Oklchroma</h1>
+			<div class="top-nav-right">
+				<a href="/about">About</a>
+				<label class="theme-setting" for="theme-select-home">
+					<span class="visually-hidden">Theme preference</span>
+					<select id="theme-select-home" class="theme-select" data-theme-select>
+						<option value="system">System</option>
+						<option value="dark">Dark</option>
+						<option value="light">Light</option>
+					</select>
+				</label>
+				<a class="share-cta" href="#share-link">Share</a>
+			</div>
 		</div>
-
+	</nav>
+	<main class="app-layout">
 		<ColorPatternGenerator client:load />
-		<!--<Webmentions />-->
 	</main>
 </Layout>

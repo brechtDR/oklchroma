@@ -1,12 +1,13 @@
 /* Enhanced CSS Output component styles */
 .copy-button {
-    padding: 0.5rem 1rem;
-    background-color: var(--accent-color);
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
+    padding: 0.45rem 1.05rem 0.45rem 0.85rem;
+    background-color: var(--s-color-brand-primary);
+    color: var(--s-color-text-on-dark);
+    border: 1px solid color-mix(in oklab, var(--s-color-brand-primary), white 15%);
+    border-radius: 999px;
     cursor: pointer;
-    font-weight: 500;
+    font-size: 0.82rem;
+    font-weight: 600;
     transition: all 0.2s ease;
     box-shadow: var(--shadow-sm);
     display: flex;
@@ -15,18 +16,25 @@
     justify-content: center;
 }
 
+.copy-icon {
+    inline-size: 0.95rem;
+    text-align: center;
+    opacity: 0.9;
+}
+
 .copy-button:hover {
-    background-color: var(--accent-hover);
+    background-color: var(--s-color-brand-primary-light);
     box-shadow: var(--shadow-md);
 }
 
 .copy-button:focus {
-    outline: 2px solid var(--accent-color);
+    outline: 2px solid var(--s-color-brand-primary);
     outline-offset: 2px;
 }
 
 .copy-button.copied {
-    background-color: var(--success-color);
+    background-color: var(--s-color-alert-success-text);
+    border-color: var(--s-color-alert-success-text);
 }
 
 .css-copied-message {
@@ -36,26 +44,4 @@
     font-size: 0.875rem;
     font-weight: 500;
     animation: fadeIn 0.3s ease-out;
-}
-
-.css-output {
-    padding: 1.25rem;
-    background-color: var(--bg-tertiary);
-    border-radius: 0.5rem;
-    overflow: auto;
-    font-size: 0.875rem;
-    height: 16rem;
-    width: 100%;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-    resize: vertical;
-    border: 1px solid var(--border-color);
-    white-space: pre;
-    color: var(--text-primary);
-    line-height: 1.6;
-}
-
-.css-output:focus {
-    outline: 2px solid var(--accent-color);
-    outline-offset: 2px;
-    border-color: var(--accent-color);
 }

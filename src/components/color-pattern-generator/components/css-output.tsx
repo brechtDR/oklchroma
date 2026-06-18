@@ -26,9 +26,7 @@ export default function CssOutput({ css }: CSSOutputProps) {
     return (
         <div className="output-container">
             <div className="output-header">
-                <h2 className="subtitle">
-                    <span className="visually-hidden-mobile">Generated </span>CSS
-                </h2>
+                <h2 className="subtitle">CSS Output</h2>
                 <button
                     className={`copy-button ${copied ? "copied" : ""}`}
                     onClick={handleCopy}
@@ -43,8 +41,10 @@ export default function CssOutput({ css }: CSSOutputProps) {
                         </>
                     ) : (
                         <>
-                            <span className="copy-icon" aria-hidden="true"></span>
-                            <span>Copy to Clipboard</span>
+                            <span className="copy-icon" aria-hidden="true">
+                                ⧉
+                            </span>
+                            <span>Copy all</span>
                         </>
                     )}
                 </button>

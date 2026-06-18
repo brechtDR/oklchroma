@@ -2,9 +2,10 @@
 .variable-preview {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background-color: var(--bg-tertiary);
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
+    background-color: var(--p-surface-cool-0);
+    border-radius: 14px 14px 14px 4px;
+    border: 1px solid var(--p-glass-light-border);
+    color: var(--p-color-cool-text);
 }
 
 .variable-list {
@@ -13,11 +14,11 @@
 }
 
 .variable-list code {
-    background-color: var(--bg-primary);
+    background-color: var(--p-surface-cool-1);
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-    border: 1px solid var(--border-color);
-    color: var(--accent-color);
+    border: 1px solid var(--p-glass-light-border);
+    color: var(--p-color-primary-300-vivid);
     white-space: nowrap;
 }
