@@ -7,4 +7,9 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
     integrations: [react()],
     site: "https://oklchroma.vercel.app",
+    vite: {
+        optimizeDeps: {
+            include: ["culori"],
+        },
+    },
 });

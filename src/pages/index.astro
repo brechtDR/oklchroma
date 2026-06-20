@@ -1,33 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
 import ColorPatternGenerator from '../components/color-pattern-generator/color-pattern-generator';
 import '../styles/main.css';
 ---
 
 <Layout title="Oklchroma - OKLCH Color Pattern Generator">
-	<nav class="top-nav">
-		<div class="top-nav-inner">
-			<div class="top-nav-left">
-				<a href="/" class="site-logo-wrap" aria-label="Oklchroma home">
-					<span class="site-logo">Oklchroma</span>
-					<span class="site-divider" aria-hidden="true"></span>
-					<span class="site-subtitle">OKLCH Pattern Generator</span>
-				</a>
-			</div>
-			<div class="top-nav-right">
-				<a href="/about">About</a>
-				<label class="theme-setting" for="theme-select-home">
-					<span class="visually-hidden">Theme preference</span>
-					<select id="theme-select-home" class="theme-select" data-theme-select>
-						<option value="system">System</option>
-						<option value="dark">Dark</option>
-						<option value="light">Light</option>
-					</select>
-				</label>
-				<a class="share-cta" href="#share-link">Share</a>
-			</div>
-		</div>
-	</nav>
+	<Header activePage="editor" />
 	<main class="app-layout">
 		<ColorPatternGenerator client:load />
 	</main>

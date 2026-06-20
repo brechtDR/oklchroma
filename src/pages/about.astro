@@ -1,31 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
 import '../styles/main.css';
 ---
 
 <Layout title="About Oklchroma">
-    <nav class="top-nav">
-        <div class="top-nav-inner">
-            <div class="top-nav-left">
-                <a href="/" class="site-logo-wrap" aria-label="Oklchroma home">
-                    <span class="site-logo">Oklchroma</span>
-                    <span class="site-chip">OKLCH Pattern Generator</span>
-                </a>
-            </div>
-            <div class="top-nav-right">
-                <a href="/">Editor</a>
-                <a href="/about" class="active">About</a>
-                <label class="theme-setting" for="theme-select-about">
-                    <span class="visually-hidden">Theme preference</span>
-                    <select id="theme-select-about" class="theme-select" data-theme-select>
-                        <option value="system">System</option>
-                        <option value="dark">Dark</option>
-                        <option value="light">Light</option>
-                    </select>
-                </label>
-            </div>
-        </div>
-    </nav>
+    <Header activePage="about" />
     <main class="about-page">
         <div class="container">
             <h1 class="title">About</h1>

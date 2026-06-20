@@ -1,0 +1,83 @@
+---
+interface Props {
+	activePage: 'editor' | 'about';
+}
+
+const { activePage } = Astro.props;
+---
+
+<nav class="top-nav">
+	<div class="top-nav-inner">
+		<div class="top-nav-left">
+			<a href="/" class="site-logo-wrap" aria-label="Oklchroma home">
+				<span class="site-logo">Oklchroma</span>
+				<span class="site-divider" aria-hidden="true"></span>
+				<span class="site-subtitle">OKLCH Pattern Generator</span>
+			</a>
+		</div>
+
+		<button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+			<span class="burger-line line-1"></span>
+			<span class="burger-line line-2"></span>
+			<span class="burger-line line-3"></span>
+		</button>
+
+		<div class="top-nav-right" id="nav-menu">
+			<div class="mobile-nav-links">
+				<a href="/" class={activePage === 'editor' ? 'active' : ''}>Editor</a>
+				<a href="/about" class={activePage === 'about' ? 'active' : ''}>About</a>
+			</div>
+			
+			<div class="theme-setting-row">
+				<span class="theme-setting-label">Theme</span>
+				<label class="theme-setting" for="theme-select">
+					<span class="visually-hidden">Theme preference</span>
+					<select id="theme-select" class="theme-select" data-theme-select>
+						<option value="system">System</option>
+						<option value="dark">Dark</option>
+						<option value="light">Light</option>
+					</select>
+				</label>
+			</div>
+
+			{activePage === 'editor' && (
+				<a class="share-cta" href="#share-link" aria-label="Share palette">
+					<span>Share palette</span>
+				</a>
+			)}
+		</div>
+	</div>
+</nav>
+
+<script>
+	const toggle = document.querySelector('.mobile-menu-toggle');
+	const menu = document.querySelector('.top-nav-right');
+
+	if (toggle && menu) {
+		toggle.addEventListener('click', () => {
+			const isOpen = menu.classList.contains('is-open');
+			menu.classList.toggle('is-open', !isOpen);
+			toggle.classList.toggle('is-active', !isOpen);
+			toggle.setAttribute('aria-expanded', String(!isOpen));
+		});
+
+		// Close menu when clicking outside
+		document.addEventListener('click', (event) => {
+			const target = event.target as Node;
+			if (!toggle.contains(target) && !menu.contains(target)) {
+				menu.classList.remove('is-open');
+				toggle.classList.remove('is-active');
+				toggle.setAttribute('aria-expanded', 'false');
+			}
+		});
+
+		// Close menu when clicking a link inside it
+		menu.querySelectorAll('.mobile-nav-links a, .share-cta').forEach((link) => {
+			link.addEventListener('click', () => {
+				menu.classList.remove('is-open');
+				toggle.classList.remove('is-active');
+				toggle.setAttribute('aria-expanded', 'false');
+			});
+		});
+	}
+</script>

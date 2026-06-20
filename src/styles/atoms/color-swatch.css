@@ -1,14 +1,15 @@
-/* Color ramp hero — sticky under the nav, always visible while controls scroll */
-.color-ramp {
+/* Sticky wrapper for the color swatches ramp */
+.color-ramp-sticky-container {
     position: sticky;
-    top: 3.4rem;
-    container-type: scroll-state;
-    container-name: ramp;
+    top: 0;
     z-index: 40;
+    margin-block: var(--s-spacing-md) var(--s-spacing-lg);
+}
+
+.color-ramp {
     display: flex;
     flex-direction: column;
     gap: var(--s-spacing-sm);
-    margin-block: var(--s-spacing-md) var(--s-spacing-lg);
     padding: var(--s-spacing-md);
     border: 1px solid var(--s-color-surface-glass-border);
     border-radius: var(--s-radius-card-shape);
@@ -20,7 +21,13 @@
         gap 0.26s ease,
         border-radius 0.26s ease,
         transform 0.26s ease;
-    will-change: transform;
+    will-change: padding, gap, border-radius;
+
+    /* Scroll-driven animation properties */
+    animation-name: stuck-animation;
+    animation-timeline: scroll(root);
+    animation-range: 0px 72px;
+    animation-fill-mode: both;
 }
 
 .color-ramp-header {
@@ -37,7 +44,15 @@
     transition:
         opacity 0.2s ease,
         transform 0.26s ease,
-        max-height 0.26s ease;
+        max-height 0.26s ease,
+        display 0.2s ease;
+    transition-behavior: allow-discrete;
+
+    /* Scroll-driven animation properties */
+    animation-name: fade-out-stuck;
+    animation-timeline: scroll(root);
+    animation-range: 0px 72px;
+    animation-fill-mode: both;
 }
 
 .color-ramp-identity {
@@ -87,6 +102,12 @@
     border-radius: var(--s-radius-md);
     overflow: hidden;
     transition: min-height 0.26s ease;
+
+    /* Scroll-driven animation properties */
+    animation-name: swatch-shrink;
+    animation-timeline: scroll(root);
+    animation-range: 0px 72px;
+    animation-fill-mode: both;
 }
 
 .color-swatch {
@@ -103,6 +124,12 @@
         min-height 0.26s ease,
         transform var(--transition-fast, 0.2s) ease,
         box-shadow var(--transition-fast, 0.2s) ease;
+
+    /* Scroll-driven animation properties */
+    animation-name: swatch-shrink;
+    animation-timeline: scroll(root);
+    animation-range: 0px 72px;
+    animation-fill-mode: both;
 }
 
 .color-swatch.is-marked::before {
@@ -183,7 +210,9 @@
     transition:
         opacity 0.2s ease,
         transform 0.26s ease,
-        max-height 0.26s ease;
+        max-height 0.26s ease,
+        display 0.2s ease;
+    transition-behavior: allow-discrete;
 }
 
 .swatch-scale > span {
@@ -218,7 +247,15 @@
     transition:
         opacity 0.2s ease,
         transform 0.26s ease,
-        max-height 0.26s ease;
+        max-height 0.26s ease,
+        display 0.2s ease;
+    transition-behavior: allow-discrete;
+
+    /* Scroll-driven animation properties */
+    animation-name: fade-out-stuck;
+    animation-timeline: scroll(root);
+    animation-range: 0px 72px;
+    animation-fill-mode: both;
 }
 
 .copy-message code {
@@ -235,38 +272,55 @@
     }
 }
 
-@container ramp scroll-state(stuck: top) {
-    .color-ramp {
+/* Keyframes for Scroll-Driven animations */
+@keyframes stuck-animation {
+    to {
         padding: var(--s-spacing-xs) var(--s-spacing-sm);
         gap: var(--s-spacing-xs);
-        transform: translateY(-0.1rem);
+        transform: translateY(0);
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
     }
+}
 
-    .color-ramp-header,
-    .swatch-scale,
-    .copy-message {
+@keyframes fade-out-stuck {
+    to {
         opacity: 0;
         max-height: 0;
         transform: translateY(-0.35rem) scale(0.985);
         pointer-events: none;
+        display: none;
     }
+}
 
-    .color-swatches,
-    .color-swatch {
+@keyframes swatch-shrink {
+    to {
         min-height: 3.5rem;
     }
 }
 
-@media (width < 640px) {
-    @container ramp scroll-state(stuck: top) {
-        .color-ramp {
-            padding: 0.35rem 0.45rem;
-            border-radius: var(--s-radius-md);
-        }
+@keyframes swatch-shrink-mobile {
+    to {
+        min-height: 3rem;
+    }
+}
 
-        .color-swatches,
-        .color-swatch {
-            min-height: 3rem;
-        }
+/* Mobile adjustments for Scroll-Driven animations */
+@media (max-width: 640px) {
+    .color-ramp {
+        animation-range: 0px 60px;
+    }
+    
+    .color-ramp-header,
+    .swatch-scale,
+    .copy-message {
+        animation-range: 0px 60px;
+    }
+    
+    .color-swatches,
+    .color-swatch {
+        min-height: 5rem;
+        animation-name: swatch-shrink-mobile;
+        animation-range: 0px 60px;
     }
 }

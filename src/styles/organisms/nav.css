@@ -1,6 +1,5 @@
 .top-nav {
-    position: sticky;
-    inset-block-start: 0;
+    position: relative;
     z-index: 80;
     background: color-mix(in oklab, var(--s-surface-0), transparent 12%);
     border-bottom: 1px solid var(--s-color-surface-glass-border);
@@ -41,6 +40,8 @@
     align-items: center;
     gap: 0.5rem;
     text-decoration: none;
+    position: relative;
+    z-index: 90;
 }
 
 .site-logo {
@@ -126,6 +127,58 @@
     background: var(--s-color-brand-primary-light);
 }
 
+.share-icon {
+    display: none;
+}
+
+.mobile-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.theme-setting-row {
+    display: flex;
+    align-items: center;
+}
+
+.theme-setting-label {
+    display: none;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 90;
+    position: relative;
+}
+
+.burger-line {
+    width: 100%;
+    height: 2px;
+    background-color: var(--text-primary);
+    border-radius: 99px;
+    transition: transform 0.25s ease, opacity 0.25s ease, background-color 0.25s ease;
+}
+
+/* Transform lines when active */
+.mobile-menu-toggle.is-active .line-1 {
+    transform: translateY(8px) rotate(45deg);
+}
+.mobile-menu-toggle.is-active .line-2 {
+    opacity: 0;
+}
+.mobile-menu-toggle.is-active .line-3 {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
 @container topnav (width < 700px) {
     .top-nav-inner {
         padding: 0.7rem 1rem;
@@ -142,5 +195,137 @@
 
     .theme-select {
         min-inline-size: 5.9rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    .top-nav-inner {
+        padding: 0.65rem 1rem;
+    }
+
+    .top-nav-right {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--s-surface-0); /* Solid brand canvas color */
+        border: none;
+        border-radius: 0;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 6.5rem 1.5rem 1.5rem;
+        gap: 1.25rem;
+        box-shadow: none;
+        z-index: 79;
+        overflow-y: auto;
+        
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease;
+        display: flex;
+    }
+
+    .top-nav-right.is-open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .mobile-nav-links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .mobile-nav-links a {
+        display: block;
+        padding: 0.85rem 1.25rem;
+        border-radius: var(--s-radius-md);
+        text-align: left;
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: background 0.2s, color 0.2s;
+        background: var(--s-surface-1);
+        border: 1px solid var(--s-color-surface-glass-border);
+    }
+
+    .mobile-nav-links a:hover,
+    .mobile-nav-links a:focus {
+        color: var(--text-primary);
+        background: var(--s-color-surface-glass-hover);
+    }
+
+    .mobile-nav-links a.active {
+        color: var(--s-color-brand-primary);
+        font-weight: 600;
+        background: color-mix(in oklab, var(--s-color-brand-primary), transparent 90%);
+        border-left: 4px solid var(--s-color-brand-primary);
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .theme-setting-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.25rem;
+        background: var(--s-surface-1);
+        border: 1px solid var(--s-color-surface-glass-border);
+        border-radius: var(--s-radius-md);
+        gap: 1rem;
+    }
+
+    .theme-setting-label {
+        display: inline-block;
+        font-size: 1rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .theme-setting {
+        display: inline-flex;
+        flex-shrink: 0;
+        width: auto;
+    }
+
+    .theme-select {
+        min-inline-size: 7.5rem;
+        block-size: 2.4rem;
+        font-size: 0.88rem;
+        padding-inline: 0.75rem 1.55rem;
+        border-radius: 999px;
+        background: var(--s-color-surface-glass);
+        border: 1px solid var(--s-color-surface-glass-border);
+        color: var(--text-primary);
+        text-align-last: right;
+    }
+
+    .top-nav-right .share-cta {
+        display: block;
+        padding: 0.85rem 1.25rem !important;
+        font-size: 1.1rem;
+        font-weight: 600;
+        background: var(--s-color-brand-primary);
+        color: var(--s-color-text-on-dark) !important;
+        border-radius: var(--s-radius-md);
+        border: 1px solid color-mix(in oklab, var(--s-color-brand-primary), white 15%);
+        box-shadow: var(--shadow-sm);
+        text-align: center;
+        transition: background 0.2s, transform 0.2s;
+        margin-top: 0.5rem;
+    }
+
+    .top-nav-right .share-cta:hover {
+        background: var(--s-color-brand-primary-light);
+        transform: translateY(-1px);
     }
 }
