@@ -56,6 +56,10 @@
     border-color: color-mix(in oklab, var(--tab-color), transparent 45%);
 }
 
+.tab-removable {
+    padding-inline-end: 1.65rem;
+}
+
 .tab-dot {
     inline-size: 0.5rem;
     block-size: 0.5rem;

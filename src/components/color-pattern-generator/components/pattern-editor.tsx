@@ -13,6 +13,7 @@ interface PatternEditorProps {
     nameError: string;
     patterns: Pattern[];
     onAddHarmonyPattern: (id: number, harmony: "complementary" | "analogous" | "split" | "triadic") => void;
+    onFitGamut: (id: number, target: "srgb" | "p3") => void;
 }
 
 export default function PatternEditor({
@@ -25,6 +26,7 @@ export default function PatternEditor({
     nameError,
     patterns,
     onAddHarmonyPattern,
+    onFitGamut,
 }: PatternEditorProps) {
     const supportsHueControls = ["oklch", "lch", "hsl", "hwb"].includes(pattern.colorSpace);
     const sourceHue = pattern.colorValues.h ?? 0;
@@ -178,6 +180,40 @@ export default function PatternEditor({
                 ) : (
                     <p className="input-help">Harmony quick add is available in hue-based spaces like OKLCH, LCH, HSL, and HWB.</p>
                 )}
+            </div>
+
+            {/* Gamut Controls */}
+            <div className="editor-card gamut-tools">
+                <h2 className="subtitle">Gamut Adjustment</h2>
+                <p className="input-help">Automatically optimize palette values to fit within standard display gamuts.</p>
+                <div className="harmony-buttons">
+                    <button
+                        type="button"
+                        className="harmony-button"
+                        onClick={() => onFitGamut(pattern.id, "srgb")}
+                        title="Reduce chroma and base modifier to fit fully within the sRGB gamut"
+                    >
+                        <span
+                            className="harmony-preview-dot"
+                            style={{ backgroundColor: "#f59e0b" }}
+                            aria-hidden="true"
+                        />
+                        <span>Fit to sRGB</span>
+                    </button>
+                    <button
+                        type="button"
+                        className="harmony-button"
+                        onClick={() => onFitGamut(pattern.id, "p3")}
+                        title="Reduce chroma and base modifier to fit fully within the Display P3 gamut"
+                    >
+                        <span
+                            className="harmony-preview-dot"
+                            style={{ backgroundColor: "#ef4444" }}
+                            aria-hidden="true"
+                        />
+                        <span>Fit to Display P3</span>
+                    </button>
+                </div>
             </div>
         </div>
     );

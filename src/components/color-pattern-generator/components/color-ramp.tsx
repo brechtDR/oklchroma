@@ -2,7 +2,7 @@ import { formatHex } from "culori";
 import { identify } from "chromonym";
 import { useMemo, useState } from "react";
 import type { Pattern } from "../types.ts";
-import { computeScaleOklch } from "../utils/color.ts";
+import { computeScaleOklch, computeScaleAnalysis } from "../utils/color.ts";
 
 interface ColorRampProps {
     pattern: Pattern;
@@ -32,6 +32,10 @@ export default function ColorRamp({ pattern, displayColor, getPreviewVarName, cs
         return names;
     }, [pattern]);
 
+    const gamutAnalysis = useMemo(() => {
+        return computeScaleAnalysis(pattern);
+    }, [pattern]);
+
     const copyToClipboard = (percentage: number) => {
         const varName = `--${pattern.name}-${percentage}`;
         const colorValue = cssVariables[varName] || varName;
@@ -49,7 +53,7 @@ export default function ColorRamp({ pattern, displayColor, getPreviewVarName, cs
 
     return (
         <div className="color-ramp-sticky-container">
-            <section className="color-ramp" aria-label={`Color ramp for ${pattern.name}`}>
+                <section className="color-ramp" aria-label={`Color ramp for ${pattern.name}`}>
                 <div className="color-ramp-header">
                     <div className="color-ramp-identity">
                         <span className="pattern-color-chip" style={{ backgroundColor: displayColor }} aria-hidden="true" />
@@ -75,16 +79,31 @@ export default function ColorRamp({ pattern, displayColor, getPreviewVarName, cs
                     {SHADE_STEPS.map((i) => {
                         const varName = `--${pattern.name}-${i}`;
                         const isCopied = copiedIndex === i;
+                        const swatchAnalysis = gamutAnalysis.find((a) => a.percentage === i);
+                        const isOutOfSrgb = swatchAnalysis?.outOfSrgb ?? false;
+                        const isOutOfP3 = swatchAnalysis?.outOfP3 ?? false;
 
                         return (
                             <button
                                 key={i}
                                 className={`color-swatch ${isCopied ? "copied" : ""} ${i === ACTIVE_STEP ? "is-marked" : ""}`}
-                                title={`Click to copy ${varName}`}
+                                title={
+                                    isOutOfP3 
+                                        ? `Click to copy ${varName} (Out of P3 Gamut)` 
+                                        : isOutOfSrgb 
+                                            ? `Click to copy ${varName} (Out of sRGB Gamut)` 
+                                            : `Click to copy ${varName}`
+                                }
                                 aria-label={`Copy color ${varName} to clipboard, shade ${i}`}
                                 onClick={() => copyToClipboard(i)}
                                 style={{ backgroundColor: getPreviewVarName(pattern, i) }}
                             >
+                                {isOutOfSrgb && (
+                                    <span 
+                                        className={`gamut-warning ${isOutOfP3 ? "out-of-p3" : "out-of-srgb"}`}
+                                        aria-hidden="true"
+                                    />
+                                )}
                                 {isCopied && (
                                     <span className="copied-indicator" aria-hidden="true">
                                         <svg
@@ -116,6 +135,17 @@ export default function ColorRamp({ pattern, displayColor, getPreviewVarName, cs
                             {step}
                         </span>
                     ))}
+                </div>
+
+                <div className="gamut-legend">
+                    <span className="gamut-legend-item">
+                        <span className="gamut-legend-dot out-of-srgb" aria-hidden="true" />
+                        <span>Out of sRGB (Standard Display)</span>
+                    </span>
+                    <span className="gamut-legend-item">
+                        <span className="gamut-legend-dot out-of-p3" aria-hidden="true" />
+                        <span>Out of Display P3 (Wide Gamut Display)</span>
+                    </span>
                 </div>
 
                 <div className="copy-message" role="status" aria-live="polite">

@@ -7,6 +7,7 @@
     backdrop-filter: blur(10px);
 }
 
+
 .top-nav-inner {
     max-width: 1200px;
     margin-inline: auto;
@@ -37,7 +38,7 @@
 
 .site-logo-wrap {
     display: inline-flex;
-    align-items: center;
+    align-items: baseline;
     gap: 0.5rem;
     text-decoration: none;
     position: relative;
@@ -55,6 +56,7 @@
     inline-size: 1px;
     block-size: 1.4rem;
     background: var(--s-color-surface-glass-border);
+    align-self: center;
 }
 
 .site-subtitle {

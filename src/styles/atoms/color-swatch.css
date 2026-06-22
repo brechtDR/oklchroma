@@ -1,4 +1,3 @@
-/* Sticky wrapper for the color swatches ramp */
 .color-ramp-sticky-container {
     position: sticky;
     top: 0;
@@ -17,17 +16,10 @@
     box-shadow: var(--shadow-sm);
     backdrop-filter: blur(12px);
     transition:
-        padding 0.26s ease,
-        gap 0.26s ease,
-        border-radius 0.26s ease,
-        transform 0.26s ease;
+        padding 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+        gap 0.26s cubic-bezier(0.16, 1, 0.3, 1),
+        border-radius 0.26s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: padding, gap, border-radius;
-
-    /* Scroll-driven animation properties */
-    animation-name: stuck-animation;
-    animation-timeline: scroll(root);
-    animation-range: 0px 72px;
-    animation-fill-mode: both;
 }
 
 .color-ramp-header {
@@ -45,14 +37,8 @@
         opacity 0.2s ease,
         transform 0.26s ease,
         max-height 0.26s ease,
-        display 0.2s ease;
-    transition-behavior: allow-discrete;
-
-    /* Scroll-driven animation properties */
-    animation-name: fade-out-stuck;
-    animation-timeline: scroll(root);
-    animation-range: 0px 72px;
-    animation-fill-mode: both;
+        margin 0.26s ease,
+        padding 0.26s ease;
 }
 
 .color-ramp-identity {
@@ -98,16 +84,10 @@
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     gap: 0;
-    min-height: 7rem;
+    height: 7rem;
     border-radius: var(--s-radius-md);
     overflow: hidden;
-    transition: min-height 0.26s ease;
-
-    /* Scroll-driven animation properties */
-    animation-name: swatch-shrink;
-    animation-timeline: scroll(root);
-    animation-range: 0px 72px;
-    animation-fill-mode: both;
+    transition: height 0.26s ease;
 }
 
 .color-swatch {
@@ -116,20 +96,13 @@
     background: none;
     cursor: pointer;
     position: relative;
-    min-height: 7rem;
+    height: 100%;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     transition:
-        min-height 0.26s ease,
         transform var(--transition-fast, 0.2s) ease,
         box-shadow var(--transition-fast, 0.2s) ease;
-
-    /* Scroll-driven animation properties */
-    animation-name: swatch-shrink;
-    animation-timeline: scroll(root);
-    animation-range: 0px 72px;
-    animation-fill-mode: both;
 }
 
 .color-swatch.is-marked::before {
@@ -210,9 +183,7 @@
     transition:
         opacity 0.2s ease,
         transform 0.26s ease,
-        max-height 0.26s ease,
-        display 0.2s ease;
-    transition-behavior: allow-discrete;
+        max-height 0.26s ease;
 }
 
 .swatch-scale > span {
@@ -247,15 +218,7 @@
     transition:
         opacity 0.2s ease,
         transform 0.26s ease,
-        max-height 0.26s ease,
-        display 0.2s ease;
-    transition-behavior: allow-discrete;
-
-    /* Scroll-driven animation properties */
-    animation-name: fade-out-stuck;
-    animation-timeline: scroll(root);
-    animation-range: 0px 72px;
-    animation-fill-mode: both;
+        max-height 0.26s ease;
 }
 
 .copy-message code {
@@ -266,61 +229,113 @@
 }
 
 @container app (width < 640px) {
-    .color-swatches,
-    .color-swatch {
-        min-height: 5rem;
+    .color-swatches {
+        height: 5rem;
     }
 }
 
-/* Keyframes for Scroll-Driven animations */
-@keyframes stuck-animation {
-    to {
-        padding: var(--s-spacing-xs) var(--s-spacing-sm);
-        gap: var(--s-spacing-xs);
-        transform: translateY(0);
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-    }
+/* Gamut warning dots */
+.gamut-warning {
+    position: absolute;
+    top: 0.45rem;
+    right: 0.45rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes fade-out-stuck {
-    to {
-        opacity: 0;
-        max-height: 0;
-        transform: translateY(-0.35rem) scale(0.985);
-        pointer-events: none;
-        display: none;
-    }
+.gamut-warning.out-of-srgb {
+    background-color: #f59e0b; /* Amber */
 }
 
-@keyframes swatch-shrink {
-    to {
-        min-height: 3.5rem;
-    }
+.gamut-warning.out-of-p3 {
+    background-color: #ef4444; /* Red */
 }
 
-@keyframes swatch-shrink-mobile {
-    to {
-        min-height: 3rem;
-    }
+/* Legend styling */
+.gamut-legend {
+    display: flex;
+    gap: 1.25rem;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-block-start: var(--s-spacing-xs);
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
 }
 
-/* Mobile adjustments for Scroll-Driven animations */
-@media (max-width: 640px) {
-    .color-ramp {
-        animation-range: 0px 60px;
+.gamut-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.gamut-legend-dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.gamut-legend-dot.out-of-srgb {
+    background-color: #f59e0b;
+}
+
+.gamut-legend-dot.out-of-p3 {
+    background-color: #ef4444;
+}
+
+/* Scroll-state direction-based transitions */
+@supports (container-type: scroll-state) {
+    html {
+        container-type: scroll-state;
     }
-    
-    .color-ramp-header,
-    .swatch-scale,
-    .copy-message {
-        animation-range: 0px 60px;
+
+    @container scroll-state(scrolled: bottom) {
+        .color-ramp {
+            padding: var(--s-spacing-xs) var(--s-spacing-sm);
+            gap: var(--s-spacing-xs);
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .color-ramp-header {
+            opacity: 0;
+            max-height: 0;
+            margin: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            pointer-events: none;
+        }
+
+        .color-swatches {
+            height: 3.5rem;
+        }
+
+        .swatch-scale {
+            opacity: 0;
+            max-height: 0;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .copy-message {
+            opacity: 0;
+            max-height: 0;
+            margin: 0;
+            pointer-events: none;
+        }
     }
-    
-    .color-swatches,
-    .color-swatch {
-        min-height: 5rem;
-        animation-name: swatch-shrink-mobile;
-        animation-range: 0px 60px;
+
+    @media (max-width: 640px) {
+        @container scroll-state(scrolled: bottom) {
+            .color-swatches {
+                height: 3rem;
+            }
+        }
     }
 }

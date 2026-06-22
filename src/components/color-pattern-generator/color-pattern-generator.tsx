@@ -9,6 +9,8 @@ import {
     formatColor,
     getCurveMultiplier,
     getPatternLightnessAnchor,
+    getPatternColorAsOklch,
+    autoFitPatternToGamut,
     SHADE_STEPS,
     sanitizePatternName,
 } from "@components/color-pattern-generator/utils/color";
@@ -196,7 +198,6 @@ export default function ColorPatternGenerator(): React.ReactElement {
     };
 
     const generateCSS = (): void => {
-        // Messy css generator, but hey, it works
         let css = `:root {\n`;
         const cssVars: Record<string, string> = {};
 
@@ -206,13 +207,20 @@ export default function ColorPatternGenerator(): React.ReactElement {
             const lightnessAnchor = getPatternLightnessAnchor(pattern);
             const lightnessAnchorPercent = (lightnessAnchor * 100).toFixed(2);
 
+            // Compute fallback oklch string to ensure hue is never `none`
+            const baseOklchColor = getPatternColorAsOklch(pattern);
+            const baseOklchStr = baseOklchColor 
+                ? `oklch(${(baseOklchColor.l * 100).toFixed(1)}% ${baseOklchColor.c.toFixed(3)} ${baseOklchColor.h.toFixed(0)})`
+                : color;
+
             css += `  --${name}: ${color};\n`;
+            css += `  --${name}-oklch: ${baseOklchStr};\n`;
             css += `  --${name}-base: ${baseModifier};\n`;
             css += `  --${name}-hue-shift: ${hueShift};\n`;
             css += `  --${name}-lightness-anchor: ${lightnessAnchorPercent}%;\n`;
 
-            // Store the base variables
             cssVars[`--${name}`] = color;
+            cssVars[`--${name}-oklch`] = baseOklchStr;
             cssVars[`--${name}-base`] = baseModifier.toString();
             cssVars[`--${name}-hue-shift`] = hueShift.toString();
             cssVars[`--${name}-lightness-anchor`] = `${lightnessAnchorPercent}%`;
@@ -220,15 +228,26 @@ export default function ColorPatternGenerator(): React.ReactElement {
             SHADE_STEPS.forEach((i) => {
                 const curveMultiplier = getCurveMultiplier(i, pattern.modifierCurve).toFixed(3);
                 const hueOffset = (hueShift * (1 - i / 100)).toFixed(2);
-                const lightnessOffset = (((i - 50) / 50) * 100).toFixed(2);
+                
+                let lightnessValue: string;
+                if (i === 50) {
+                    lightnessValue = `var(--${name}-lightness-anchor)`;
+                } else if (i < 50) {
+                    const t = (i / 50).toFixed(2);
+                    lightnessValue = `calc(var(--${name}-lightness-anchor) * ${t})`;
+                } else {
+                    const t = ((i - 50) / 50).toFixed(2);
+                    lightnessValue = `calc(var(--${name}-lightness-anchor) + (100% - var(--${name}-lightness-anchor)) * ${t})`;
+                }
 
-                // Define the variable for this shade
+                // Taper chroma dynamically in CSS based on actual lightness
+                const taperFormula = `calc(4 * (${lightnessValue} / 100%) * (1 - (${lightnessValue} / 100%)))`;
+                const chromaFormula = `calc((var(--${name}-base) + (${curveMultiplier} * c)) * ${taperFormula})`;
+
                 const variableName = `--${name}-${i}`;
-                const variableValue = `oklch(from var(--${name}) clamp(0%, calc(var(--${name}-lightness-anchor) + ${lightnessOffset}%), 100%) calc(var(--${name}-base) + (${curveMultiplier} * c)) calc(h + ${hueOffset}))`;
+                const variableValue = `oklch(from var(--${name}-oklch) ${lightnessValue} ${chromaFormula} calc(h + ${hueOffset}))`;
 
                 css += `  ${variableName}: ${variableValue};\n`;
-
-                // Store the variable for use in the swatches
                 cssVars[variableName] = variableValue;
             });
 
@@ -243,6 +262,18 @@ export default function ColorPatternGenerator(): React.ReactElement {
     const copyUrl = (): void => {
         // Make sure URL is updated before copying
         updateURLParam();
+    };
+
+    const fitPatternToGamut = (id: number, target: "srgb" | "p3"): void => {
+        setPatterns((prevPatterns) =>
+            prevPatterns.map((p) => {
+                if (p.id === id) {
+                    return autoFitPatternToGamut(p, target);
+                }
+                return p;
+            })
+        );
+        debouncedUpdateURL();
     };
 
     const addHarmonyPattern = (id: number, harmony: "complementary" | "analogous" | "split" | "triadic"): void => {
@@ -298,17 +329,10 @@ export default function ColorPatternGenerator(): React.ReactElement {
         return `var(--${pattern.name}-${percentage})`;
     };
 
-    // Create a style block with our CSS variables for the preview
-    const styleBlock = Object.entries(cssVariables)
-        .map(([name, value]) => `${name}: ${value};`)
-        .join("\n");
-
     const activePattern = patterns.find((pattern) => pattern.id === activeTab) ?? patterns[0];
 
     return (
-        <div className="container app-content">
-            {/* Add a style element with our CSS variables */}
-            <style dangerouslySetInnerHTML={{ __html: `:root {\n${styleBlock}\n}` }} />
+        <div className="container app-content" style={cssVariables as React.CSSProperties}>
 
             {/* Pattern Tabs */}
             <div className="tabs">
@@ -369,6 +393,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
                             nameError={nameError}
                             patterns={patterns}
                             onAddHarmonyPattern={addHarmonyPattern}
+                            onFitGamut={fitPatternToGamut}
                         />
                     ))}
                 </div>

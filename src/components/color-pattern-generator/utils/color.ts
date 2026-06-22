@@ -14,7 +14,7 @@ const toOklch = converter("oklch");
 const isSrgbGamut = inGamut("rgb");
 const isP3Gamut = inGamut("p3");
 
-interface OklchColor {
+export interface OklchColor {
     mode: "oklch";
     l: number;
     c: number;
@@ -102,7 +102,7 @@ function cubicBezierYAtX(x: number, curve: [number, number, number, number]): nu
     return clamp01(sampleCurveY(t));
 }
 
-function getPatternColorAsOklch(pattern: Pattern): OklchColor | null {
+export function getPatternColorAsOklch(pattern: Pattern): OklchColor | null {
     const { colorSpace, colorValues } = pattern;
     const colorBySpace: Record<ColorSpace, unknown> = {
         oklab: { mode: "oklab", l: colorValues.l, a: colorValues.a, b: colorValues.b },
@@ -148,11 +148,27 @@ export function computeScaleOklch(pattern: Pattern, percentage: number, darkMode
     }
 
     const sourcePercentage = darkMode ? 110 - percentage : percentage;
-    const stepOffset = (sourcePercentage - 50) / 50;
-    const lightness = clamp01(baseOklch.l + stepOffset);
+    
+    // Lightness Interpolation (prevents clipping)
+    let lightness: number;
+    if (sourcePercentage === 50) {
+        lightness = baseOklch.l;
+    } else if (sourcePercentage < 50) {
+        const t = sourcePercentage / 50;
+        lightness = baseOklch.l * t;
+    } else {
+        const t = (sourcePercentage - 50) / 50;
+        lightness = baseOklch.l + (1 - baseOklch.l) * t;
+    }
+    lightness = clamp01(lightness);
+
+    // Chroma Tapering (prevents neon colors near black/white poles)
     const curveMultiplier = getCurveMultiplier(percentage, pattern.modifierCurve);
     const chromaMultiplier = darkMode ? 0.85 : 1;
-    const chroma = Math.max(0, pattern.baseModifier + curveMultiplier * baseOklch.c * chromaMultiplier);
+    const rawChroma = Math.max(0, pattern.baseModifier + curveMultiplier * baseOklch.c * chromaMultiplier);
+    const taper = 4 * lightness * (1 - lightness);
+    const chroma = rawChroma * taper;
+
     const hueOffset = pattern.hueShift * (1 - lightness);
     const hue = normalizeHue(baseOklch.h + hueOffset);
 

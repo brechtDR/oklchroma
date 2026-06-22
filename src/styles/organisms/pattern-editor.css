@@ -161,25 +161,29 @@
     align-items: center;
     gap: 0.3rem;
     cursor: pointer;
-    color: color-mix(in oklab, var(--danger-color), white 14%);
+    color: #ef4444; /* High-contrast red for visibility */
     font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.02em;
-    padding: 0.2rem 0.45rem;
-    border-radius: 999px;
-    border: 1px solid color-mix(in oklab, var(--danger-color), transparent 55%);
-    background: color-mix(in oklab, var(--danger-color), transparent 90%);
+    padding: 0.28rem 0.6rem;
+    border-radius: var(--s-radius-md);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    background: rgba(239, 68, 68, 0.12);
+    transition: all 0.2s ease;
 }
 
 .remove-button:hover:not(:disabled) {
-    color: var(--danger-hover);
-    background: color-mix(in oklab, var(--danger-color), transparent 84%);
+    color: #ffffff;
+    background: #ef4444;
+    border-color: #ef4444;
 }
 
 .remove-button:disabled {
     color: var(--text-secondary);
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
+    border-color: var(--s-color-surface-glass-border);
+    background: transparent;
 }
 
 .harmony-buttons {
@@ -246,6 +250,6 @@
 
     .css-output-panel {
         position: sticky;
-        top: 21rem;
+        top: 9rem; /* Align just below stuck color ramp */
     }
 }
