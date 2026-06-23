@@ -25,6 +25,7 @@
 
 .field-prefix {
     flex-shrink: 0;
+    margin-block-start: 2px;
     font-size: 0.62rem;
     font-weight: 700;
     letter-spacing: 0.08em;

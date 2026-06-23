@@ -2,7 +2,7 @@ import { useState } from "react";
 
 interface ShareLinkProps {
     url: string;
-    onCopy: () => void;
+    onCopy: () => string;
 }
 
 export default function ShareLink({ url, onCopy }: ShareLinkProps) {
@@ -10,10 +10,10 @@ export default function ShareLink({ url, onCopy }: ShareLinkProps) {
 
     const handleCopy = () => {
         // Ensure the URL reflects the latest patterns before copying.
-        onCopy();
+        const freshUrl = onCopy() || window.location.href;
 
         navigator.clipboard
-            .writeText(url || window.location.href)
+            .writeText(freshUrl)
             .then(() => {
                 setCopied(true);
                 setTimeout(() => setCopied(false), 3000);

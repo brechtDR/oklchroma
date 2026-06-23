@@ -1,255 +1,257 @@
 .app-content {
-    container-type: inline-size;
-    container-name: app;
+	container-name: app;
+	container-type: inline-size;
 }
 
 .generator-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--s-spacing-lg);
-    align-items: start;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	align-items: start;
+	gap: var(--s-spacing-lg);
 }
 
 .generator-controls {
-    min-width: 0;
+	min-width: 0;
 }
 
 .css-output-panel {
-    min-width: 0;
+	min-width: 0;
 }
 
 .pattern-editor {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-spacing-lg);
-    container-type: inline-size;
-    container-name: editor;
+	container-name: editor;
+	container-type: inline-size;
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	gap: var(--s-spacing-lg);
 }
 
 .hidden {
-    display: none;
+	display: none;
 }
 
 .visible {
-    display: flex;
+	display: flex;
 }
 
 .editor-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-spacing-md);
-    border: 1px solid var(--s-color-surface-glass-border);
-    border-radius: var(--s-radius-card-shape);
-    background: var(--s-surface-card);
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(8px);
-    padding: var(--s-spacing-lg);
+	display: flex;
+	flex-direction: column;
+	padding: var(--s-spacing-lg);
+	gap: var(--s-spacing-md);
+	border: 1px solid var(--s-color-surface-glass-border);
+	border-radius: var(--s-radius-card-shape);
+	backdrop-filter: blur(8px);
+	background: var(--s-surface-card);
+	box-shadow: var(--shadow-sm);
 }
 
 .editor-card .subtitle + .input-help {
-    margin-top: calc(var(--s-spacing-2xs) * -1);
-    margin-bottom: var(--s-spacing-2xs);
+	margin-top: calc(var(--s-spacing-2xs) * -1);
+	margin-bottom: var(--s-spacing-2xs);
 }
 
 .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-spacing-md);
-    flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--s-spacing-md);
 }
 
 .editor-card .subtitle {
-    margin: 0;
+	margin: 0;
 }
 
 .input-help {
-    margin: 0;
-    font-size: 0.8rem;
-    line-height: 1.5;
-    color: var(--text-secondary);
+	margin: 0;
+	color: var(--text-secondary);
+	font-size: 0.8rem;
+	line-height: 1.5;
 }
 
 .control-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--s-spacing-sm);
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--s-spacing-sm);
 }
 
 .control-value {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    white-space: nowrap;
-    letter-spacing: 0.02em;
+	color: var(--text-primary);
+	font-weight: 600;
+	font-size: 0.8rem;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	letter-spacing: 0.02em;
+	white-space: nowrap;
 }
 
 .input-label-note {
-    font-weight: 400;
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--text-secondary);
+	color: var(--text-secondary);
+	font-weight: 400;
+	letter-spacing: 0;
+	text-transform: none;
 }
 
 .pattern-color-chip {
-    inline-size: 2.6rem;
-    block-size: 2.6rem;
-    border-radius: var(--s-radius-md);
-    border: 1px solid var(--s-color-surface-glass-border);
-    box-shadow: var(--shadow-sm);
-    flex-shrink: 0;
+	flex-shrink: 0;
+	inline-size: 2.6rem;
+	block-size: 2.6rem;
+	border: 1px solid var(--s-color-surface-glass-border);
+	border-radius: var(--s-radius-md);
+	box-shadow: var(--shadow-sm);
 }
 
 .pattern-meta .subtitle {
-    margin: 0;
+	margin: 0;
 }
 
 .pattern-value {
-    margin: 0;
-    color: var(--s-color-brand-primary-muted);
-    font-size: 0.85rem;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	margin: 0;
+	color: var(--s-color-brand-primary-muted);
+	font-size: 0.85rem;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .pattern-form-row {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.5rem;
-    container-type: inline-size;
-    container-name: form;
+	container-name: form;
+	container-type: inline-size;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 0.5rem;
 }
 
 .pattern-name-container,
 .color-space-selector {
-    min-width: 0;
+	min-width: 0;
 }
 
 .input-label {
-    display: block;
-    margin-bottom: var(--s-spacing-2xs);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
+	display: block;
+	margin-bottom: var(--s-spacing-2xs);
+	color: var(--text-secondary);
+	font-weight: 600;
+	font-size: 0.78rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
 }
 
 .control-value.is-accent {
-    color: var(--s-color-brand-primary);
+	color: var(--s-color-brand-primary);
 }
 
 .hue-shift-control,
 .chroma-floor-control {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-spacing-2xs);
-    margin-block-start: var(--s-spacing-sm);
-    padding-block-start: var(--s-spacing-md);
-    border-block-start: 1px solid var(--s-color-surface-glass-border);
+	display: flex;
+	flex-direction: column;
+	margin-block-start: var(--s-spacing-sm);
+	padding-block-start: var(--s-spacing-md);
+	gap: var(--s-spacing-2xs);
+	border-block-start: 1px solid var(--s-color-surface-glass-border);
 }
 
 .remove-button {
-    all: unset;
-    position: absolute;
-    inset-inline-end: var(--s-spacing-lg);
-    inset-block-start: var(--s-spacing-lg);
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    cursor: pointer;
-    color: #ef4444; /* High-contrast red for visibility */
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    padding: 0.28rem 0.6rem;
-    border-radius: var(--s-radius-md);
-    border: 1px solid rgba(239, 68, 68, 0.45);
-    background: rgba(239, 68, 68, 0.12);
-    transition: all 0.2s ease;
+	all: unset;
+	display: inline-flex;
+	z-index: 2;
+	position: absolute;
+	align-items: center;
+	inset-block-start: var(--s-spacing-lg);
+	inset-inline-end: var(--s-spacing-lg);
+	padding: 0.28rem 0.6rem;
+	gap: 0.3rem;
+	border: 1px solid rgba(239, 68, 68, 0.45);
+	border-radius: var(--s-radius-md);
+	background: rgba(239, 68, 68, 0.12);
+	color: #ef4444; /* High-contrast red for visibility */
+	font-weight: 600;
+	font-size: 0.78rem;
+	letter-spacing: 0.02em;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 .remove-button:hover:not(:disabled) {
-    color: #ffffff;
-    background: #ef4444;
-    border-color: #ef4444;
+	border-color: #ef4444;
+	background: #ef4444;
+	color: #ffffff;
 }
 
 .remove-button:disabled {
-    color: var(--text-secondary);
-    opacity: 0.4;
-    cursor: not-allowed;
-    border-color: var(--s-color-surface-glass-border);
-    background: transparent;
+	border-color: var(--s-color-surface-glass-border);
+	background: transparent;
+	color: var(--text-secondary);
+	cursor: not-allowed;
+	opacity: 0.4;
 }
 
 .harmony-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-spacing-xs);
-    margin-block-start: var(--s-spacing-2xs);
+	display: flex;
+	flex-wrap: wrap;
+	margin-block-start: var(--s-spacing-2xs);
+	gap: var(--s-spacing-xs);
 }
 
 .harmony-button {
-    border: 1px solid var(--s-color-surface-glass-border);
-    border-radius: 999px;
-    background: var(--s-color-surface-glass);
-    color: var(--text-primary);
-    padding: 0.42rem 0.8rem;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--s-spacing-xs);
-    transition:
-        border-color var(--transition-fast, 0.2s) ease,
-        background-color var(--transition-fast, 0.2s) ease;
+	display: inline-flex;
+	align-items: center;
+	padding: 0.42rem 0.8rem;
+	gap: var(--s-spacing-xs);
+	border: 1px solid var(--s-color-surface-glass-border);
+	border-radius: 999px;
+	background: var(--s-color-surface-glass);
+	color: var(--text-primary);
+	font-weight: 500;
+	font-size: 0.8rem;
+	cursor: pointer;
+	transition:
+		border-color var(--transition-fast, 0.2s) ease,
+		background-color var(--transition-fast, 0.2s) ease;
 }
 
 .harmony-button:hover:not(:disabled) {
-    border-color: color-mix(in oklab, var(--s-color-brand-primary), white 20%);
-    background: color-mix(in oklab, var(--s-color-brand-primary), transparent 85%);
+	border-color: color-mix(in oklab, var(--s-color-brand-primary), white 20%);
+	background: color-mix(in oklab, var(--s-color-brand-primary), transparent 85%);
 }
 
 .harmony-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+	cursor: not-allowed;
+	opacity: 0.5;
 }
 
 .harmony-preview-dot {
-    inline-size: 0.7rem;
-    block-size: 0.7rem;
-    border-radius: 999px;
-    border: 1px solid rgb(255 255 255 / 0.25);
-    flex-shrink: 0;
+	flex-shrink: 0;
+	inline-size: 0.7rem;
+	block-size: 0.7rem;
+	border: 1px solid rgb(255 255 255 / 0.25);
+	border-radius: 999px;
 }
 
 @container form (width >= 460px) {
-    .pattern-form-row {
-        grid-template-columns: minmax(120px, 0.42fr) minmax(0, 1.58fr);
-        align-items: center;
-    }
+	.pattern-form-row {
+		grid-template-columns: minmax(120px, 0.42fr) minmax(0, 1.58fr);
+		align-items: center;
+	}
 }
 
 @media (width >= 900px) {
-    .pattern-form-row {
-        grid-template-columns: 128px minmax(0, 1fr);
-        gap: 0.5rem;
-    }
+	.pattern-form-row {
+		grid-template-columns: 128px minmax(0, 1fr);
+		gap: 0.5rem;
+	}
 }
 
 @container app (width >= 1020px) {
-    .generator-layout {
-        grid-template-columns: minmax(0, 1.7fr) minmax(320px, 0.9fr);
-        gap: var(--s-spacing-lg);
-    }
+	.generator-layout {
+		grid-template-columns: minmax(0, 1.7fr) minmax(320px, 0.9fr);
+		gap: var(--s-spacing-lg);
+	}
 
-    .css-output-panel {
-        position: sticky;
-        top: 9rem; /* Align just below stuck color ramp */
-    }
+	@media (height >= 840px) {
+		.css-output-panel {
+			position: sticky;
+			top: 20rem; /* Clearance below stuck color ramp + swatch hover expansion */
+		}
+	}
 }

@@ -3,7 +3,7 @@
     margin-bottom: 1.5rem;
     padding: 1rem;
     background-color: var(--p-surface-cool-0);
-    border-radius: 14px 14px 14px 4px;
+    border-radius: var(--s-radius-card-shape);
     border: 1px solid var(--p-glass-light-border);
     color: var(--p-color-cool-text);
 }

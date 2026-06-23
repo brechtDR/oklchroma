@@ -77,7 +77,28 @@ oklch(
                 </ol>
             </section>
 
-
+            <section class="about-section">
+                <h2>Gamut Warnings</h2>
+                <p>
+                    OKLCH lets you specify colors with more chroma than most screens can actually show. When a shade in your palette falls outside a display gamut, a small dot appears in the corner of that swatch.
+                </p>
+                <div class="gamut-legend">
+                    <span class="gamut-legend-item">
+                        <span class="gamut-legend-dot out-of-srgb" aria-hidden="true" />
+                        <span>Out of sRGB — the color cannot be reproduced on a standard display</span>
+                    </span>
+                    <span class="gamut-legend-item">
+                        <span class="gamut-legend-dot out-of-p3" aria-hidden="true" />
+                        <span>Out of Display P3 — the color is beyond even wide-gamut screens</span>
+                    </span>
+                </div>
+                <p>
+                    A warning does not mean your CSS is invalid. Browsers will clamp out-of-gamut colors to the nearest color the display can show. The dot is there so you know the on-screen result may differ from the OKLCH values you copied.
+                </p>
+                <p>
+                    If you want a palette that stays within a specific gamut, use the <strong>Gamut Adjustment</strong> controls in the pattern editor. <strong>Fit to sRGB</strong> reduces chroma and the base modifier until every shade fits standard displays; <strong>Fit to Display P3</strong> does the same for wide-gamut screens.
+                </p>
+            </section>
 
             <section class="about-section">
                 <h2>Browser Support</h2>
@@ -141,6 +162,10 @@ oklch(
         white-space: pre;
         color: var(--text-primary);
         border: 1px solid var(--border-color);
+    }
+
+    .about-section .gamut-legend {
+        margin-block: 1rem 1.25rem;
     }
 
 

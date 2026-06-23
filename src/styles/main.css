@@ -3,6 +3,7 @@
 @import "globals/animations.css";
 
 @import "atoms/buttons.css";
+@import "atoms/card-shape.css";
 @import "atoms/color-swatch.css";
 @import "atoms/container.css";
 @import "atoms/icon.css";

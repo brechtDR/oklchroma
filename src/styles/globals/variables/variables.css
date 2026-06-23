@@ -129,6 +129,7 @@
     --p-radius-4: 4px;
     --p-radius-14: 14px;
     --p-radius-22: 22px;
+    --p-radius-28: 28px;
 
     /* Semantic tokens: spacing */
     --s-spacing-2xs: var(--p-spacing-4);
@@ -143,6 +144,7 @@
     --s-radius-sm: var(--p-radius-4);
     --s-radius-md: var(--p-radius-14);
     --s-radius-card: var(--p-radius-22);
+    --s-radius-card-scoop: var(--p-radius-28);
     --s-radius-card-shape: var(--s-radius-card) var(--s-radius-card) var(--s-radius-card) var(--s-radius-sm);
 
     /* Fonts */
@@ -181,4 +183,11 @@
     color-scheme: dark;
     --s-shadow-subtle: var(--p-shadow-cool-subtle);
     --s-shadow-medium: var(--p-shadow-cool-medium);
+}
+
+@supports (corner-shape: scoop) {
+    :root {
+        --s-radius-card-shape: var(--s-radius-card) var(--s-radius-card) var(--s-radius-card) var(--s-radius-card-scoop);
+        --s-corner-shape-card: round round round scoop;
+    }
 }

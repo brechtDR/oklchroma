@@ -43,14 +43,21 @@ export default function ColorPatternGenerator(): React.ReactElement {
     useEffect(() => {
         // Load patterns from URL
         const loadedPatterns = loadPatternsFromURL();
-        if (loadedPatterns.length > 0) {
-            setPatterns(
-                loadedPatterns.map((pattern) => ({
-                    ...pattern,
-                    modifierCurve: pattern.modifierCurve ?? DEFAULT_MODIFIER_CURVE,
-                    hueShift: pattern.hueShift ?? 0,
-                })),
-            );
+        const normalizedPatterns =
+            loadedPatterns.length > 0
+                ? loadedPatterns.map((pattern) => ({
+                      ...pattern,
+                      modifierCurve: pattern.modifierCurve ?? DEFAULT_MODIFIER_CURVE,
+                      hueShift: pattern.hueShift ?? 0,
+                  }))
+                : null;
+
+        if (normalizedPatterns) {
+            setPatterns(normalizedPatterns);
+        }
+
+        if (window.location.search.includes("p=")) {
+            setCurrentUrl(window.location.href);
         }
 
         // Generate initial CSS
@@ -71,26 +78,30 @@ export default function ColorPatternGenerator(): React.ReactElement {
         }
 
         urlUpdateTimeoutRef.current = setTimeout(() => {
-            updateURLParam();
+            updateURLParam(patterns);
         }, 1000); // 1 second debounce
     };
 
     // Update URL using query parameter instead of hash
-    const updateURLParam = (): void => {
-        if (typeof window === "undefined") return;
+    const updateURLParam = (patternsToEncode: Pattern[] = patterns): string => {
+        if (typeof window === "undefined") return "";
 
         // Encode patterns to compact format
-        const encodedPatterns = encodePatterns(patterns);
+        const encodedPatterns = encodePatterns(patternsToEncode);
 
         // Create URL with query parameter
         const url = new URL(window.location.href);
         url.searchParams.set("p", encodedPatterns);
 
+        const nextUrl = url.toString();
+
         // Update URL without refreshing page
-        window.history.replaceState({}, "", url.toString());
+        window.history.replaceState({}, "", nextUrl);
 
         // Update display URL
-        setCurrentUrl(url.toString());
+        setCurrentUrl(nextUrl);
+
+        return nextUrl;
     };
 
     const addPattern = (): void => {
@@ -112,7 +123,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
 
         setPatterns(newPatterns);
         setActiveTab(newId);
-        debouncedUpdateURL();
+        updateURLParam(newPatterns);
     };
 
     const removePattern = (id: number): void => {
@@ -126,7 +137,7 @@ export default function ColorPatternGenerator(): React.ReactElement {
             setActiveTab(newPatterns[0]?.id || 0);
         }
 
-        debouncedUpdateURL();
+        updateURLParam(newPatterns);
     };
 
     const updatePattern = (id: number, field: keyof Pattern, value: any): void => {
@@ -259,9 +270,9 @@ export default function ColorPatternGenerator(): React.ReactElement {
         setCssVariables(cssVars);
     };
 
-    const copyUrl = (): void => {
+    const copyUrl = (): string => {
         // Make sure URL is updated before copying
-        updateURLParam();
+        return updateURLParam();
     };
 
     const fitPatternToGamut = (id: number, target: "srgb" | "p3"): void => {
@@ -313,9 +324,11 @@ export default function ColorPatternGenerator(): React.ReactElement {
             },
         };
 
-        setPatterns((previous) => [...previous, nextPattern]);
+        const nextPatterns = [...patterns, nextPattern];
+
+        setPatterns(nextPatterns);
         setActiveTab(newPatternId);
-        debouncedUpdateURL();
+        updateURLParam(nextPatterns);
     };
 
     // Function to get color for display based on the pattern's color space

@@ -1,0 +1,5 @@
+@supports (corner-shape: scoop) {
+    :is(.editor-card, .color-ramp, .css-output-panel, .variable-preview) {
+        corner-shape: var(--s-corner-shape-card);
+    }
+}
